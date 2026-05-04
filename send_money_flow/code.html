@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004c40",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2320",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Next Pay - Send Money</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-md mx-auto bg-white dark:bg-slate-900 min-h-screen shadow-xl flex flex-col">
+<!-- TopAppBar Navigation -->
+<div class="flex items-center p-4 justify-between border-b border-primary/10">
+<div onclick="window.history.back()" class="text-primary flex size-10 shrink-0 items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">Send Money</h2>
+<div class="size-10"></div>
+</div>
+<!-- Progress Indicator -->
+<div class="flex w-full flex-row items-center justify-center gap-3 py-6">
+<div class="h-2 w-2 rounded-full bg-primary"></div>
+<div class="h-2 w-2 rounded-full bg-primary"></div>
+<div class="h-2 w-2 rounded-full bg-primary/20"></div>
+</div>
+<main class="flex-1 px-4 overflow-y-auto">
+<!-- Step 1: Input (Visible by default in this mockup) -->
+<section class="space-y-6">
+<header>
+<h3 class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight pt-2">Transaction Details</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Enter recipient information and amount to transfer.</p>
+</header>
+<div class="space-y-4">
+<div class="flex flex-col">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Recipient Solana Address</label>
+<div class="flex w-full items-stretch rounded-lg border border-primary/20 bg-background-light dark:bg-slate-800 focus-within:border-primary transition-colors">
+<input id="recipient-address" class="flex-1 bg-transparent border-none focus:ring-0 text-slate-900 dark:text-slate-100 h-14 px-4 placeholder:text-slate-400 font-mono text-sm" placeholder="Enter Solana address" value=""/>
+<div class="text-primary flex items-center justify-center px-4 border-l border-primary/10">
+<span class="material-symbols-outlined">person_search</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-2">Amount (USDC)</label>
+<div class="flex w-full items-stretch rounded-lg border border-primary/20 bg-background-light dark:bg-slate-800 focus-within:border-primary transition-colors">
+<input id="send-amount" class="flex-1 bg-transparent border-none focus:ring-0 text-slate-900 dark:text-slate-100 h-14 px-4 placeholder:text-slate-400 text-2xl font-semibold" placeholder="0.00" value="0.00" type="number" step="0.01"/>
+<div class="text-primary flex items-center justify-center px-4 border-l border-primary/10">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+</div>
+<p class="text-xs text-slate-500 mt-2 px-1">Available Balance: <span id="available-balance">0.00</span> USDC</p>
+</div>
+</div>
+<!-- Step 2: Confirmation Mockup Overlay/Section -->
+<div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-5 border border-primary/10">
+<h4 class="text-primary font-bold text-sm uppercase tracking-widest mb-4">Transaction Summary</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm">Recipient</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Ahmed Khan</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm">Transfer Amount</span>
+<span id="summary-amount" class="text-slate-900 dark:text-slate-100 font-medium">0.00 USDC</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm">Network Fee</span>
+<span class="text-green-600 dark:text-green-400 font-medium">~0.000005 SOL</span>
+</div>
+<div class="pt-3 border-t border-primary/10 flex justify-between items-center">
+<span class="text-slate-900 dark:text-slate-100 font-bold">Total to Debit</span>
+<span id="summary-total" class="text-primary font-bold text-lg">0.00 USDC</span>
+</div>
+</div>
+</div>
+<!-- Step 3: Status Flow -->
+<div id="tx-status" class="space-y-4 pt-4 hidden">
+<div class="flex items-start gap-4">
+<div class="size-6 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Wallet Signed</p>
+<p class="text-xs text-slate-500">Transaction approved by user.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="size-6 rounded-full border-2 border-primary border-t-transparent animate-spin shrink-0 mt-0.5" style="animation: spin 1s linear infinite;"></div>
+<div>
+<p class="text-sm font-semibold text-primary">Confirming on Solana</p>
+<p class="text-xs text-slate-500">Awaiting final block confirmation...</p>
+</div>
+</div>
+</div>
+<!-- Transaction Hash Card -->
+<div id="tx-hash-card" class="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 items-center justify-between mt-4 hidden">
+<div class="flex flex-col overflow-hidden">
+<span class="text-[10px] uppercase font-bold text-slate-400">Transaction Hash</span>
+<a id="tx-hash-link" href="#" target="_blank" class="text-xs font-mono text-primary hover:underline truncate">...</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Actions -->
+<footer class="p-4 bg-white dark:bg-slate-900 border-t border-primary/10">
+<button id="confirm-transfer-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+<span>Confirm Transfer</span>
+<span class="material-symbols-outlined">send</span>
+</button>
+<button class="w-full mt-3 text-slate-500 dark:text-slate-400 font-medium py-2 rounded-xl text-sm">
+                Cancel Transaction
+            </button>
+</footer>
+</div>
+<style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.min.js"></script>
+<script src="../solana-backend.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (!window.solanaBackend || !window.solanaBackend.getConnectedWallet()) {
+            window.location.href = '../onboarding_authentication/code.html';
+            return;
+        }
+
+        const amountInput = document.getElementById('send-amount');
+        const summaryAmount = document.getElementById('summary-amount');
+        const summaryTotal = document.getElementById('summary-total');
+        const availableBalance = document.getElementById('available-balance');
+
+        amountInput.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value || 0).toFixed(2);
+            summaryAmount.textContent = val + ' USDC';
+            summaryTotal.textContent = val + ' USDC';
+        });
+
+        try {
+            const balance = await window.solanaBackend.getUSDCBalance();
+            availableBalance.textContent = balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } catch (err) {
+            console.error('Failed to fetch USDC balance', err);
+        }
+
+        const confirmBtn = document.getElementById('confirm-transfer-btn');
+        confirmBtn.addEventListener('click', async () => {
+            const recipient = document.getElementById('recipient-address').value;
+            const amount = parseFloat(amountInput.value);
+
+            if (!recipient || isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid recipient address and amount.');
+                return;
+            }
+
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="animation: spin 1s linear infinite;">sync</span> Sending...';
+            document.getElementById('tx-status').classList.remove('hidden');
+
+            try {
+                const signature = await window.solanaBackend.sendUSDC(recipient, amount);
+                document.getElementById('tx-status').innerHTML = `
+                    <div class="flex items-start gap-4">
+                    <div class="size-6 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0 mt-0.5">
+                    <span class="material-symbols-outlined text-sm">check</span>
+                    </div>
+                    <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Transaction Confirmed</p>
+                    <p class="text-xs text-slate-500">Successfully sent ${amount} USDC.</p>
+                    </div>
+                    </div>`;
+                const hashCard = document.getElementById('tx-hash-card');
+                hashCard.classList.remove('hidden');
+                hashCard.classList.add('flex');
+                const hashLink = document.getElementById('tx-hash-link');
+                hashLink.textContent = signature;
+                hashLink.href = 'https://explorer.solana.com/tx/' + signature + '?cluster=devnet';
+
+                confirmBtn.innerHTML = '<span>Sent Successfully</span><span class="material-symbols-outlined">check_circle</span>';
+            } catch (err) {
+                console.error('Transaction failed', err);
+                alert('Transaction failed: ' + err.message);
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = '<span>Confirm Transfer</span><span class="material-symbols-outlined">send</span>';
+                document.getElementById('tx-status').classList.add('hidden');
+            }
+        });
+    });
+</script>
+</body></html>

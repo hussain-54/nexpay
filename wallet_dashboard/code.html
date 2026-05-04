@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PakStable Wallet Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004c40",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2320",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-md mx-auto bg-white dark:bg-background-dark min-h-screen flex flex-col shadow-xl">
+<!-- Header -->
+<header class="flex items-center p-4 justify-between sticky top-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md z-10 border-b border-primary/10">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">Next Pay</h1>
+<div class="flex w-10 items-center justify-end">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-primary/5 text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto">
+<!-- Balance Card -->
+<div class="p-4 @container">
+<div class="relative flex flex-col items-stretch justify-start rounded-xl overflow-hidden shadow-lg bg-primary text-white p-6">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-6xl">account_balance_wallet</span>
+</div>
+<div class="relative z-10">
+<p class="text-primary-200 text-sm font-medium opacity-80 uppercase tracking-wider">USDC Balance</p>
+<h2 class="text-3xl font-bold mt-1 tracking-tight"><span id="usdc-amount">...</span> <span class="text-lg font-normal">USDC</span></h2>
+<div class="mt-6 flex flex-col gap-1">
+<p class="text-[10px] font-medium text-primary-200 uppercase tracking-wider">Connected Wallet</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+<p id="wallet-address" class="text-xs font-mono break-all bg-black/20 px-2 py-1 rounded">Connecting...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="px-4 py-2">
+<div class="flex gap-4">
+<button onclick="window.location.href='../send_money_flow/code.html'" class="flex-1 flex items-center justify-center gap-2 rounded-xl h-14 bg-primary text-white font-bold transition-transform active:scale-95 shadow-md shadow-primary/20">
+<span class="material-symbols-outlined">send</span>
+<span>Send</span>
+</button>
+<button onclick="window.location.href='../receive_money/code.html'" class="flex-1 flex items-center justify-center gap-2 rounded-xl h-14 bg-white dark:bg-slate-800 border-2 border-primary/10 text-primary font-bold transition-transform active:scale-95">
+<span class="material-symbols-outlined">call_received</span>
+<span>Receive</span>
+</button>
+</div>
+</div>
+<!-- Blockchain Status Card -->
+<div class="p-4 @container">
+<div class="flex flex-col items-start justify-between gap-4 rounded-xl border border-primary/10 bg-primary/5 p-5 sm:flex-row sm:items-center">
+<div class="flex items-center gap-4">
+<div class="bg-primary/20 p-2 rounded-full text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-slate-100 text-sm font-bold">Blockchain Verified</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Assets secured on-chain</p>
+</div>
+</div>
+<a class="text-xs font-bold flex items-center gap-1 text-primary hover:underline" href="../blockchain_ledger_explorer/code.html">
+                        Explorer
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Recent Transactions -->
+<div class="px-4 py-2">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-900 dark:text-slate-100">Recent Activity</h3>
+<button class="text-primary text-xs font-bold">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Transaction Item 1 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined text-lg">arrow_upward</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Payment to Ali Khan</p>
+<p class="text-[10px] text-slate-400 uppercase font-medium">Oct 24, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">-2,500 USDC</p>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500 font-bold uppercase tracking-tighter">Completed</span>
+</div>
+</div>
+<!-- Transaction Item 2 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-lg">arrow_downward</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Deposit from Bank</p>
+<p class="text-[10px] text-slate-400 uppercase font-medium">Oct 22, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-green-600">+10,000 USDC</p>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 font-bold uppercase tracking-tighter">Verified</span>
+</div>
+</div>
+<!-- Transaction Item 3 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700 opacity-80">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600">
+<span class="material-symbols-outlined text-lg">sync</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Swap USDC to USDT</p>
+<p class="text-[10px] text-slate-400 uppercase font-medium">Oct 21, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">5,000 USDC</p>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-tighter">Pending</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-24"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-primary/10 px-6 py-2 pb-6">
+<div class="flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-primary" href="../wallet_dashboard/code.html">
+<span class="material-symbols-outlined filled">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-[10px] font-medium">Assets</span>
+</a>
+<div class="relative -top-6">
+<button onclick="window.location.href='../receive_money/code.html'" class="bg-primary size-14 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/30 border-4 border-white dark:border-background-dark">
+<span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="../transaction_history/code.html">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-medium">History</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</a>
+</div>
+</nav>
+</div>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.min.js"></script>
+<script src="../solana-backend.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (!window.solanaBackend || !window.solanaBackend.getConnectedWallet()) {
+            window.location.href = '../onboarding_authentication/code.html';
+            return;
+        }
+
+        const walletAddr = window.solanaBackend.wallet.toString();
+        document.getElementById('wallet-address').textContent = walletAddr.slice(0, 4) + '...' + walletAddr.slice(-4);
+        
+        try {
+            const balance = await window.solanaBackend.getUSDCBalance();
+            document.getElementById('usdc-amount').textContent = balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } catch (err) {
+            console.error('Failed to fetch USDC balance', err);
+            document.getElementById('usdc-amount').textContent = '0.00';
+        }
+    });
+</script>
+</body></html>

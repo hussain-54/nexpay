@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Next Pay Ledger Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#004c40",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2320",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chain-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #004c40 50%, transparent 50%);
+            background-size: 2px 8px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-white dark:bg-background-dark shadow-xl overflow-x-hidden">
+<header class="flex items-center bg-white dark:bg-background-dark p-4 border-b border-primary/10 justify-between sticky top-0 z-10">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-primary text-lg font-bold leading-tight tracking-tight">Next Pay Ledger</h2>
+<span class="text-[10px] font-bold text-primary/60 uppercase tracking-widest">Live Network</span>
+</div>
+<div class="flex w-10 items-center justify-end">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-primary/5 text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<div class="px-4 py-4">
+<div class="bg-primary/5 rounded-xl p-4 mb-6 border border-primary/10">
+<div class="flex justify-between items-center mb-3">
+<span class="text-sm font-medium text-primary/70">Network Status</span>
+<span class="flex items-center gap-1 text-xs font-bold text-green-600 dark:text-green-400">
+<span class="size-2 bg-green-500 rounded-full animate-pulse"></span> Synchronized
+                        </span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] uppercase text-primary/50 font-bold">Total Blocks</p>
+<p class="text-lg font-bold text-primary">842,105</p>
+</div>
+<div>
+<p class="text-[10px] uppercase text-primary/50 font-bold">Avg. Block Time</p>
+<p class="text-lg font-bold text-primary">12.4s</p>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<label class="flex flex-col w-full group">
+<div class="flex w-full items-stretch rounded-xl h-12 bg-primary/5 border border-transparent group-focus-within:border-primary/30 transition-all">
+<div class="text-primary/60 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full border-none bg-transparent focus:ring-0 text-slate-900 dark:text-slate-100 placeholder:text-primary/40 text-sm" placeholder="Search Block, Tx Hash, or Address"/>
+</div>
+</label>
+</div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-primary">Block History</h3>
+<button class="text-primary text-xs font-semibold flex items-center gap-1">
+                        View All <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<div class="relative space-y-0">
+<div class="absolute left-[19px] top-4 bottom-4 chain-line opacity-30"></div>
+<div class="relative grid grid-cols-[40px_1fr] gap-x-3 mb-4 group cursor-pointer">
+<div class="flex flex-col items-center pt-1 z-10">
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-xl">token</span>
+</div>
+</div>
+<div class="bg-white dark:bg-primary/10 border border-primary/10 rounded-xl p-4 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-primary text-sm font-bold">Block #842105</p>
+<p class="text-primary/60 text-[11px]">2 minutes ago</p>
+</div>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Verified</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs">
+<span class="text-slate-500">Transactions</span>
+<span class="font-semibold text-primary">142 USDC</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-slate-500">Hash</span>
+<span class="font-mono text-[10px] text-primary/70">0x7a2...f89c</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative grid grid-cols-[40px_1fr] gap-x-3 mb-4 group cursor-pointer">
+<div class="flex flex-col items-center pt-1 z-10">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">link</span>
+</div>
+</div>
+<div class="bg-white dark:bg-primary/5 border border-primary/5 rounded-xl p-4 shadow-sm hover:bg-primary/[0.02] transition-all">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-primary/80 text-sm font-bold">Block #842104</p>
+<p class="text-primary/60 text-[11px]">10 minutes ago</p>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-xs">
+<span class="text-slate-400">Transactions</span>
+<span class="font-medium text-primary/80">89 USDC</span>
+</div>
+<div class="flex flex-col mt-2 pt-2 border-t border-primary/5">
+<span class="text-[10px] text-slate-400 uppercase font-bold mb-1">Previous Hash</span>
+<span class="font-mono text-[10px] text-primary/50 break-all">0x4b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative grid grid-cols-[40px_1fr] gap-x-3 mb-4 group cursor-pointer">
+<div class="flex flex-col items-center pt-1 z-10">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">link</span>
+</div>
+</div>
+<div class="bg-white dark:bg-primary/5 border border-primary/5 rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-primary/80 text-sm font-bold">Block #842103</p>
+<p class="text-primary/60 text-[11px]">18 minutes ago</p>
+</div>
+</div>
+<div class="space-y-1 text-xs">
+<div class="flex justify-between">
+<span class="text-slate-400">Transactions</span>
+<span class="font-medium text-primary/80">214 USDC</span>
+</div>
+<div class="flex justify-between">
+<span class="text-slate-400">Timestamp</span>
+<span class="text-primary/80">2023-11-24 14:02:11</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative grid grid-cols-[40px_1fr] gap-x-3 mb-4 opacity-60">
+<div class="flex flex-col items-center pt-1 z-10">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary/40">
+<span class="material-symbols-outlined text-xl">link</span>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-primary/5 border border-dashed border-primary/20 rounded-xl p-4">
+<p class="text-slate-400 text-sm font-medium italic">Older blocks archived...</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-t border-primary/10 flex justify-around py-3 px-6 z-20">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Explorer</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Transfers</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Assets</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Account</span>
+</a>
+</nav>
+</div>
+</body></html>
