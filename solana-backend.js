@@ -1,4 +1,4 @@
-// Next Pay: Solana Backend Integration
+// NexPay: Solana Backend Integration
 // Handles Phantom wallet connection and USDC transactions on Solana Devnet
 
 const SOLANA_DEVNET = 'https://api.devnet.solana.com';

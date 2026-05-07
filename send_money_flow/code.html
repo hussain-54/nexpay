@@ -25,7 +25,7 @@
             },
         }
     </script>
-<title>Next Pay - Send Money</title>
+<title>NexPay - Send Money</title>
 <style>
     body {
       min-height: max(884px, 100dvh);
@@ -91,6 +91,10 @@
 <div class="flex justify-between items-center">
 <span class="text-slate-500 dark:text-slate-400 text-sm">Network Fee</span>
 <span class="text-green-600 dark:text-green-400 font-medium">~0.000005 SOL</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-slate-500 dark:text-slate-400 text-sm">NexPay Fee (0.1%)</span>
+<span id="nexpay-fee" class="text-slate-900 dark:text-slate-100 font-medium">0.00 USDC</span>
 </div>
 <div class="pt-3 border-t border-primary/10 flex justify-between items-center">
 <span class="text-slate-900 dark:text-slate-100 font-bold">Total to Debit</span>
@@ -159,9 +163,12 @@
         const availableBalance = document.getElementById('available-balance');
 
         amountInput.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value || 0).toFixed(2);
-            summaryAmount.textContent = val + ' USDC';
-            summaryTotal.textContent = val + ' USDC';
+            const val = parseFloat(e.target.value || 0);
+            const fee = val * 0.001;
+            const total = val + fee;
+            summaryAmount.textContent = val.toFixed(2) + ' USDC';
+            document.getElementById('nexpay-fee').textContent = fee.toFixed(2) + ' USDC';
+            summaryTotal.textContent = total.toFixed(2) + ' USDC';
         });
 
         try {
