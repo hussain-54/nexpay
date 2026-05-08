@@ -1,70 +1,72 @@
 #!/bin/bash
+set -e
 
-# 1. Check if solana CLI is installed
-if ! command -v solana &> /dev/null
-then
-    echo "❌ Error: solana CLI is not installed."
-    exit 1
+echo "========================================"
+echo "  NexPay — Solana Devnet Deployment"
+echo "========================================"
+
+# Step 1: Check tools
+if ! command -v solana &> /dev/null; then
+  echo "ERROR: Solana CLI not found."
+  echo "Install: https://docs.solana.com/cli/install-solana-cli-tools"
+  exit 1
 fi
 
-# 2. Check if anchor CLI is installed
-if ! command -v anchor &> /dev/null
-then
-    echo "❌ Error: anchor CLI is not installed."
-    exit 1
+if ! command -v anchor &> /dev/null; then
+  echo "ERROR: Anchor CLI not found."
+  echo "Install: cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked"
+  exit 1
 fi
 
-# 3. Set Solana config to devnet
-echo "📍 Setting Solana config to devnet..."
+# Step 2: Set devnet
 solana config set --url devnet
+echo "Network set to devnet"
 
-# 4. Request SOL airdrop
-echo "🪂 Requesting airdrop..."
-solana airdrop 2
+# Step 3: Airdrop
+echo "Requesting SOL airdrop..."
+solana airdrop 2 || echo "Airdrop failed, continuing..."
 
-# 5. Build program
-echo "🚀 Building Anchor program..."
+# Step 4: Build
 cd program
+echo "Building Anchor program..."
 anchor build
 
-# 6. Deploy program
-echo "📦 Deploying to Devnet..."
+# Step 5: Deploy
+echo "Deploying to devnet..."
 DEPLOY_OUTPUT=$(anchor deploy --provider.cluster devnet 2>&1)
 echo "$DEPLOY_OUTPUT"
 
-# 7. Extract Program ID
+# Step 6: Extract Program ID
 PROGRAM_ID=$(echo "$DEPLOY_OUTPUT" | grep "Program Id:" | awk '{print $3}')
 
 if [ -z "$PROGRAM_ID" ]; then
-    echo "❌ Error: Could not extract Program ID from deployment output."
-    exit 1
+  echo "ERROR: Could not extract Program ID. Check deploy output above."
+  exit 1
 fi
 
-echo "✅ Deployed Program ID: $PROGRAM_ID"
+echo ""
+echo "========================================"
+echo "  DEPLOYED SUCCESSFULLY"
+echo "  Program ID: $PROGRAM_ID"
+echo "  Explorer: https://explorer.solana.com/address/$PROGRAM_ID?cluster=devnet"
+echo "========================================"
 
-# 8. Update lib.rs
-echo "📝 Updating declare_id in lib.rs..."
-sed -i "s/declare_id!(\".*\")/declare_id!(\"$PROGRAM_ID\")/g" src/lib.rs
+# Step 7: Update Program ID in all files
+cd ..
+sed -i "s/11111111111111111111111111111111/$PROGRAM_ID/g" program/src/lib.rs
+sed -i "s/11111111111111111111111111111111/$PROGRAM_ID/g" program/Anchor.toml
+sed -i "s/11111111111111111111111111111111/$PROGRAM_ID/g" app/idl/nexpay.json
+sed -i "s/11111111111111111111111111111111/$PROGRAM_ID/g" app/utils/solana.js
 
-# 9. Update Anchor.toml
-echo "📝 Updating Anchor.toml..."
-sed -i "s/nexpay = \".*\"/nexpay = \"$PROGRAM_ID\"/g" Anchor.toml
+echo "Program ID updated in all files."
 
-# 10. Update programId.ts
-echo "📝 Updating programId.ts..."
-sed -i "s/new PublicKey(\".*\")/new PublicKey(\"$PROGRAM_ID\")/g" ../app/constants/programId.ts
-
-# 11. Update nexpay.json
-echo "📝 Updating nexpay.json..."
-sed -i "s/\"address\": \".*\"/\"address\": \"$PROGRAM_ID\"/g" ../app/idl/nexpay.json
-
-# 12. Rebuild with correct ID
-echo "🔄 Rebuilding with updated Program ID..."
+# Step 8: Rebuild with correct ID
+cd program
 anchor build
+echo "Rebuild complete."
 
-# 13. Success message
-echo "------------------------------------------------"
-echo "🌟 NexPay DEPLOYMENT SUCCESSFUL 🌟"
-echo "Program ID: $PROGRAM_ID"
-echo "Explorer Link: https://explorer.solana.com/address/$PROGRAM_ID?cluster=devnet"
-echo "------------------------------------------------"
+echo ""
+echo "NEXT STEPS:"
+echo "1. Copy this Program ID: $PROGRAM_ID"
+echo "2. Paste it into README.md under Contract Deployment"
+echo "3. Run: git add . && git commit -m 'Deploy to devnet: $PROGRAM_ID' && git push"
