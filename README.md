@@ -2,7 +2,7 @@
 
 ## Overview
 
-NexPay is a Solana-powered global payment wallet designed to make cross-border transfers faster, cheaper, and more accessible. Built by Saith Asfand Yar, NexPay demonstrates how stablecoins and blockchain rails can enable near-instant international payments with minimal fees and transparent settlement.
+NexPay is a Solana-powered global payment wallet designed to make cross-border transfers faster, cheaper, and more accessible. NexPay demonstrates how stablecoins and blockchain rails can enable near-instant international payments with minimal fees and transparent settlement.
 
 The platform allows users to connect their wallet, send payments securely, and track transaction history through a modern web interface backed by a custom Rust smart contract deployed on Solana Devnet.
 
