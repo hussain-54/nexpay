@@ -1,7 +1,22 @@
 # NexPay — Solana Payment Wallet
 
 ## Overview
-NexPay is a decentralized peer-to-peer payment wallet built on Solana. Users can connect their Phantom wallet, initialize an on-chain wallet account, send SOL to any address, and track their complete payment history — all powered by a custom Rust smart contract deployed on Solana devnet.
+
+NexPay is a Solana-powered global payment wallet designed to make cross-border transfers faster, cheaper, and more accessible. Built by Saith Asfand Yar, NexPay demonstrates how stablecoins and blockchain rails can enable near-instant international payments with minimal fees and transparent settlement.
+
+The platform allows users to connect their wallet, send payments securely, and track transaction history through a modern web interface backed by a custom Rust smart contract deployed on Solana Devnet.
+
+## The Problem
+
+Traditional cross-border payments are often slow, expensive, and opaque. Bank wires can take several business days, remittance fees remain high, and millions of people still lack access to efficient financial services.
+
+## The Solution
+
+NexPay uses blockchain-based settlement to simulate a modern payment flow: users initiate a transfer, funds move through Solana infrastructure in seconds, and transactions remain transparent and traceable on-chain.
+
+## Business Model (Concept)
+
+Potential revenue streams include low transaction fees, B2B API integrations, premium accounts, and treasury/yield models for compliant stablecoin reserves.
 
 ## Live Demo
 - **Frontend:** https://next-pay-wallet.vercel.app  
