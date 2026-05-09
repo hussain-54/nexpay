@@ -56,12 +56,48 @@ export async function transferStablecoin(
   const feeMicro = amountMicro.muln(10).divn(10000); // 0.1%
   const netMicro = amountMicro.sub(feeMicro);
 
-  // DEMO MODE: Simulate successful transaction since we are using demo balance
-  console.log("Simulating transfer of", amountUsdc, "USDC to", recipientPubkey.toString());
-  await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
+  const program = getProgram(wallet);
+  const [senderPDA] = getUserPDA(wallet.publicKey);
+  const [recipientPDA] = getUserPDA(recipientPubkey);
+  const [configPDA] = getConfigPDA();
+  
+  // We need to fetch the sender account to get the current transfer_count to derive the transfer PDA
+  let senderUserAccount;
+  try {
+    senderUserAccount = await program.account.userAccount.fetch(senderPDA);
+  } catch (e) {
+    throw new Error("Sender account not found. Please complete KYC.");
+  }
+  
+  const [transferRecordPDA] = getTransferPDA(wallet.publicKey, senderUserAccount.transferCount);
+
+  // Get token accounts
+  const senderTokenAccount = await getAssociatedTokenAddress(USDC_MINT, wallet.publicKey);
+  const recipientTokenAccount = await getAssociatedTokenAddress(USDC_MINT, recipientPubkey);
+  
+  // Platform config stores fee_wallet
+  const configAccount = await program.account.platformConfig.fetch(configPDA);
+  const feeTokenAccount = await getAssociatedTokenAddress(USDC_MINT, configAccount.feeWallet);
+
+  const tx = await program.methods
+    .transferStablecoin(amountMicro, recipientCountry, memo)
+    .accounts({
+      sender: wallet.publicKey,
+      senderUserAccount: senderPDA,
+      recipientUserAccount: recipientPDA,
+      senderTokenAccount: senderTokenAccount,
+      recipientTokenAccount: recipientTokenAccount,
+      feeTokenAccount: feeTokenAccount,
+      transferRecord: transferRecordPDA,
+      platformConfig: configPDA,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      systemProgram: SystemProgram.programId,
+      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+    })
+    .rpc();
 
   return {
-    signature: "demo_tx_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    signature: tx,
     fee: feeMicro.toNumber() / 1_000_000,
     netAmount: netMicro.toNumber() / 1_000_000,
   };

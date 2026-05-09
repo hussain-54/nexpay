@@ -12,23 +12,21 @@ export const Home = () => {
   const unreadCount = getUnreadCount();
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { publicKey, usdcBalance, refreshBalances, shortAddress, connected } = useSolanaWallet();
+  const { publicKey, usdcBalance, refreshBalances, shortAddress, connected, walletAdapter } = useSolanaWallet();
   
   const [transactions, setTransactions] = useState([]);
   const [loadingTx, setLoadingTx] = useState(true);
 
   useEffect(() => {
-    if (connected && publicKey) {
+    if (connected && walletAdapter) {
       loadHistory();
     }
-  }, [connected, publicKey]);
+  }, [connected, walletAdapter]);
 
   const loadHistory = async () => {
     setLoadingTx(true);
     try {
-      // Mocked adapter for fetchTransferHistory
-      const adapter = { publicKey };
-      const history = await fetchTransferHistory(adapter);
+      const history = await fetchTransferHistory(walletAdapter);
       setTransactions(history.slice(0, 5));
     } catch (e) {
       console.error(e);
