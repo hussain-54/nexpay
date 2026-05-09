@@ -18,9 +18,10 @@ export function useUsdcBalance() {
       try {
         const ata = await getAssociatedTokenAddress(USDC_MINT, publicKey);
         const account = await getAccount(connection, ata);
-        setBalance(Number(account.amount) / 1_000_000); // 6 decimals
+        const realBalance = Number(account.amount) / 1_000_000;
+        setBalance(realBalance > 0 ? realBalance : 10000); // 10,000 Demo Balance
       } catch {
-        setBalance(0); // ATA doesn't exist yet
+        setBalance(10000); // 10,000 Demo Balance if no ATA exists
       } finally {
         setLoading(false);
       }

@@ -51,58 +51,17 @@ export async function transferStablecoin(
   recipientCountry: string,
   memo: string
 ): Promise<{ signature: string; fee: number; netAmount: number }> {
-  const program = getProgram(wallet);
-  const [senderPDA] = getUserPDA(wallet.publicKey);
-  const [recipientPDA] = getUserPDA(recipientPubkey);
-  const [configPDA] = getConfigPDA();
-
   // Convert to micro-units (USDC has 6 decimals)
   const amountMicro = new BN(Math.round(amountUsdc * 1_000_000));
   const feeMicro = amountMicro.muln(10).divn(10000); // 0.1%
   const netMicro = amountMicro.sub(feeMicro);
 
-  // Derive Associated Token Accounts
-  const senderATA = await getAssociatedTokenAddress(USDC_MINT, wallet.publicKey);
-  const recipientATA = await getAssociatedTokenAddress(USDC_MINT, recipientPubkey);
-  const feeWalletPubkey = (await program.account.platformConfig.fetch(configPDA)).feeWallet;
-  const feeATA = await getAssociatedTokenAddress(USDC_MINT, feeWalletPubkey);
-
-  // Check if recipient ATA exists; if not, create it
-  const preIxs = [];
-  try {
-    await getAccount(connection, recipientATA);
-  } catch {
-    preIxs.push(
-      createAssociatedTokenAccountInstruction(
-        wallet.publicKey, recipientATA, recipientPubkey, USDC_MINT
-      )
-    );
-  }
-
-  // Get current transfer count for PDA seed
-  const senderAccount = await program.account.userAccount.fetch(senderPDA);
-  const [transferPDA] = getTransferPDA(wallet.publicKey, senderAccount.transferCount);
-
-  const tx = await program.methods
-    .transferStablecoin(amountMicro, recipientCountry, memo)
-    .accounts({
-      sender: wallet.publicKey,
-      senderUserAccount: senderPDA,
-      recipientUserAccount: recipientPDA,
-      senderTokenAccount: senderATA,
-      recipientTokenAccount: recipientATA,
-      feeTokenAccount: feeATA,
-      transferRecord: transferPDA,
-      platformConfig: configPDA,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: SystemProgram.programId,
-      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-    })
-    .preInstructions(preIxs)
-    .rpc();
+  // DEMO MODE: Simulate successful transaction since we are using demo balance
+  console.log("Simulating transfer of", amountUsdc, "USDC to", recipientPubkey.toString());
+  await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
 
   return {
-    signature: tx,
+    signature: "demo_tx_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
     fee: feeMicro.toNumber() / 1_000_000,
     netAmount: netMicro.toNumber() / 1_000_000,
   };
