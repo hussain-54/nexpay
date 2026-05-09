@@ -7,6 +7,12 @@ export default defineConfig({
     react(),
     nodePolyfills(),
   ],
+  resolve: {
+    alias: {
+      crypto: "crypto-browserify",
+      stream: "stream-browserify",
+    },
+  },
   define: {
     "process.env": {},
     global: "globalThis",
