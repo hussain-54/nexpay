@@ -6,13 +6,13 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import App from "./App";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./index.css";
 
-const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
+// Empty array relies on Wallet Standard auto-detection for Phantom/Solflare
+const wallets = [];
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
