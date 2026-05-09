@@ -7,6 +7,7 @@ import { useSolanaWallet } from '../hooks/useSolanaWallet';
 import { transferStablecoin, fetchUserAccount, explorerLink } from '../lib/nexpay-sdk';
 import { PublicKey } from '@solana/web3.js';
 import { WalletGuard } from '../components/WalletGuard';
+import { useUsdcBalance } from '../hooks/useUsdcBalance';
 
 export const SendMoney = () => {
   const [step, setStep] = useState(1);
@@ -27,7 +28,8 @@ export const SendMoney = () => {
 
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { walletAdapter, usdcBalance, refreshBalances, refreshUserAccount } = useSolanaWallet();
+  const { walletAdapter, refreshBalances, refreshUserAccount, connected } = useSolanaWallet();
+  const { balance: usdcBalance } = useUsdcBalance();
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -90,11 +92,33 @@ export const SendMoney = () => {
   };
 
   const handleConfirm = async () => {
+    if (!connected || !walletAdapter?.publicKey) {
+      showToast("Please connect your Phantom or Solflare wallet first.", "error");
+      return;
+    }
+    if (!walletAdapter.signTransaction || !walletAdapter.signAllTransactions) {
+      showToast("Wallet does not support signing. Please reconnect.", "error");
+      return;
+    }
+
+    if (!amount || parseFloat(amount) <= 0) {
+      showToast("Enter a valid amount.", "error");
+      return;
+    }
+
+    let recipientPubkey;
+    try {
+      recipientPubkey = new PublicKey(recipientAddress);
+    } catch {
+      showToast("Invalid Solana recipient address.", "error");
+      return;
+    }
+
     setIsConfirming(true);
     try {
       const res = await transferStablecoin(
         walletAdapter,
-        new PublicKey(recipientAddress),
+        recipientPubkey,
         numAmount,
         currency.toUpperCase(),
         ""
