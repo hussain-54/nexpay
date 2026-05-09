@@ -106,8 +106,17 @@ class SolanaBackend {
     // Send USDC to a recipient
     async sendUSDC(recipientAddress, amountUi) {
         const provider = this.getProvider();
-        if (!provider || !this.wallet || !this.connection || !window.splToken) {
-            throw new Error('Missing provider, wallet, connection, or splToken library');
+        if (!provider) {
+            throw new Error('Missing provider: Phantom wallet is not detected in your browser.');
+        }
+        if (!this.wallet) {
+            throw new Error('Missing wallet: Your wallet is not connected.');
+        }
+        if (!this.connection) {
+            throw new Error('Missing connection: Solana Web3 connection failed to initialize.');
+        }
+        if (!window.splToken) {
+            throw new Error('Missing splToken library: @solana/spl-token script failed to load.');
         }
 
         try {
