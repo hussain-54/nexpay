@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     nodePolyfills({
+      include: ["crypto", "stream", "buffer", "process", "util"],
       globals: {
         Buffer: true,
         global: true,
@@ -14,4 +15,20 @@ export default defineConfig({
       protocolImports: true,
     }),
   ],
+  define: {
+    "process.env": {},
+    global: "globalThis",
+  },
+  resolve: {
+    alias: {
+      crypto: "crypto-browserify",
+      stream: "stream-browserify",
+    },
+  },
+  build: {
+    target: "esnext",
+    rollupOptions: {
+      external: [],
+    },
+  },
 });
