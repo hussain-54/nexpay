@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDownUp, CreditCard, Landmark, Smartphone, Bitcoin, Send, Download, RefreshCcw } from 'lucide-react';
+import { ArrowDownUp, CreditCard, Landmark, Smartphone, Send, Download, RefreshCcw } from 'lucide-react';
 import { Button, Input, Card, Select } from '../components/ui';
 import { useToast } from '../contexts/ToastContext';
 import { useSolanaWallet } from '../hooks/useSolanaWallet';
@@ -33,8 +33,8 @@ export const Wallet = () => {
   };
 
   const assets = [
-    { id: 'usdc', name: 'USDC', balance: usdcBalance, value: usdcBalance, color: 'bg-[#2775CA]', badge: null },
-    { id: 'sol', name: 'SOL', balance: solBalance, value: solBalance * 150 /* mock rate */, color: 'bg-[#14F195] text-bgDark', badge: null },
+    { id: 'usdc', name: 'USDC', balance: usdcBalance || 0, value: usdcBalance || 0, color: 'bg-[#2775CA]', badge: null },
+    { id: 'sol', name: 'SOL', balance: solBalance || 0, value: (solBalance || 0) * 150 /* mock rate */, color: 'bg-[#14F195] text-bgDark', badge: null },
     { id: 'usdt', name: 'USDT', balance: 0, value: 0, color: 'bg-[#26A17B]', badge: 'Coming soon' },
   ];
 
@@ -123,10 +123,10 @@ export const Wallet = () => {
 
                 <div className="flex space-x-2">
                   <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-28 bg-[#12121A]" />
-                  <Input type="text" readOnly value={swapAmount ? (swapAmount * 0.99).toFixed(4) : '0.00'} className="font-mono bg-[#12121A]" />
+                  <Input type="text" readOnly value={swapAmount ? (Number(swapAmount) * 0.99).toFixed(4) : '0.00'} className="font-mono bg-[#12121A]" />
                 </div>
 
-                <Button onClick={handleSwap} disabled={!swapAmount || swapAmount <= 0} isLoading={isSwapping} className="w-full">
+                <Button onClick={handleSwap} disabled={!swapAmount || Number(swapAmount) <= 0} isLoading={isSwapping} className="w-full">
                   Confirm Swap
                 </Button>
               </Card>
@@ -140,9 +140,13 @@ export const Wallet = () => {
               <h3 className="font-bold text-textPrimary">Crypto Deposit</h3>
               <p className="text-xs text-textMuted text-center">Send USDC or SOL to your wallet address below on the Solana Devnet.</p>
               <div className="bg-white p-2 rounded-xl">
-                <QRCodeSVG value={publicKey?.toString() || ''} size={140} />
+                {publicKey ? (
+                  <QRCodeSVG value={publicKey.toString()} size={140} />
+                ) : (
+                  <div className="w-[140px] h-[140px] bg-gray-100 flex items-center justify-center text-xs text-gray-400">No Wallet</div>
+                )}
               </div>
-              <p className="font-mono text-xs break-all text-center text-textMuted">{publicKey?.toString()}</p>
+              <p className="font-mono text-xs break-all text-center text-textMuted">{publicKey?.toString() || 'Not Connected'}</p>
             </Card>
 
             <TopUpOption icon={CreditCard} title="Credit / Debit Card" desc="Coming soon" disabled />
