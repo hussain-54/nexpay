@@ -1,9 +1,9 @@
 [features]
-seeds = false
+seeds = true
 skip-lint = false
 
 [programs.devnet]
-nexpay = "11111111111111111111111111111111"
+nexpay_program = "REPLACE_AFTER_DEPLOY"
 
 [registry]
 url = "https://api.apr.dev"
