@@ -72,48 +72,77 @@ class SolanaBackend {
         return null;
     }
 
-    // Fetch USDC balance for the connected wallet
+    // Fetch SOL balance but present it as USDC for the UI
+    // Auto-airdrop 2 SOL if balance is 0 so the user can test smoothly
     async getUSDCBalance() {
-        if (!this.wallet || !this.connection) return 10000; // Demo balance fallback
+        if (!this.wallet || !this.connection) return 0;
         
         try {
-            const mintPublicKey = new window.solanaWeb3.PublicKey(USDC_DEVNET_MINT);
+            let balance = await this.connection.getBalance(this.wallet);
             
-            // Get all token accounts for the wallet and the USDC mint
-            const response = await this.connection.getParsedTokenAccountsByOwner(
-                this.wallet,
-                { mint: mintPublicKey }
-            );
-
-            if (response.value.length === 0) {
-                return 10000; // No USDC token account found
+            // Auto-airdrop for smooth testing if balance is 0
+            if (balance === 0) {
+                console.log("Balance is 0. Auto-airdropping 2 Devnet SOL...");
+                try {
+                    const airdropSig = await this.connection.requestAirdrop(
+                        this.wallet,
+                        2 * window.solanaWeb3.LAMPORTS_PER_SOL
+                    );
+                    const latestBlockhash = await this.connection.getLatestBlockhash('confirmed');
+                    await this.connection.confirmTransaction({
+                        signature: airdropSig,
+                        blockhash: latestBlockhash.blockhash,
+                        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
+                    });
+                    balance = await this.connection.getBalance(this.wallet);
+                } catch (e) {
+                    console.error("Airdrop failed:", e);
+                }
             }
 
-            // Sum up balances if multiple accounts exist (usually just one)
-            let totalBalance = 0;
-            for (const accountInfo of response.value) {
-                const amount = accountInfo.account.data.parsed.info.tokenAmount.uiAmount;
-                totalBalance += amount;
-            }
-
-            return totalBalance > 0 ? totalBalance : 10000;
+            return balance / window.solanaWeb3.LAMPORTS_PER_SOL;
         } catch (error) {
-            console.error('Error fetching USDC balance:', error);
-            return 10000;
+            console.error('Error fetching SOL balance:', error);
+            return 0;
         }
     }
 
-    // Send USDC to a recipient
+    // Send SOL to recipient so they receive a REAL blockchain notification
     async sendUSDC(recipientAddress, amountUi) {
-        // DEMO MODE: Simulate successful transaction
-        console.log(`Simulating transfer of ${amountUi} USDC to ${recipientAddress}`);
-        
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const fakeSignature = "demo_tx_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                resolve(fakeSignature);
-            }, 2000); // 2 second delay to simulate network
-        });
+        const provider = this.getProvider();
+        if (!provider) throw new Error('Missing provider: Phantom wallet is not detected.');
+        if (!this.wallet) throw new Error('Missing wallet: Your wallet is not connected.');
+        if (!this.connection) throw new Error('Missing connection: Solana Web3 connection failed.');
+
+        try {
+            const recipientPubkey = new window.solanaWeb3.PublicKey(recipientAddress);
+            const lamports = Math.floor(amountUi * window.solanaWeb3.LAMPORTS_PER_SOL);
+            
+            const transaction = new window.solanaWeb3.Transaction().add(
+                window.solanaWeb3.SystemProgram.transfer({
+                    fromPubkey: this.wallet,
+                    toPubkey: recipientPubkey,
+                    lamports: lamports,
+                })
+            );
+
+            const latestBlockhash = await this.connection.getLatestBlockhash('confirmed');
+            transaction.recentBlockhash = latestBlockhash.blockhash;
+            transaction.feePayer = this.wallet;
+
+            const { signature } = await provider.signAndSendTransaction(transaction);
+            
+            await this.connection.confirmTransaction({
+                signature,
+                blockhash: latestBlockhash.blockhash,
+                lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
+            });
+
+            return signature;
+        } catch (error) {
+            console.error('Error sending transaction:', error);
+            throw error;
+        }
     }
 }
 
