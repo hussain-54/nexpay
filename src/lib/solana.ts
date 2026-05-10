@@ -7,12 +7,18 @@ export const DEVNET_RPC = clusterApiUrl("devnet");
 export const connection = new Connection(DEVNET_RPC, "confirmed");
 
 // Replace with actual program ID after anchor deploy
-export const PROGRAM_ID = new PublicKey("REPLACE_WITH_DEPLOYED_PROGRAM_ID");
+// Must be a valid base58 string otherwise module evaluation throws an exception!
+export const PROGRAM_ID = new PublicKey(
+  import.meta.env.VITE_PROGRAM_ID || "11111111111111111111111111111111"
+);
 
 // USDC devnet mint (Circle's official devnet USDC or create your own)
-// For testing: use spl-token create-token --decimals 6 and store address here
-export const USDC_MINT = new PublicKey("REPLACE_WITH_USDC_DEVNET_MINT");
-export const USDT_MINT = new PublicKey("REPLACE_WITH_USDT_DEVNET_MINT");
+export const USDC_MINT = new PublicKey(
+  import.meta.env.VITE_USDC_MINT || "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+);
+export const USDT_MINT = new PublicKey(
+  import.meta.env.VITE_USDT_MINT || "EJwZniZseaWTyP354kPUM52G3T14q2T1eZcR4K7XhBps"
+);
 
 export function getProgram(wallet: any) {
   const provider = new AnchorProvider(connection, wallet, {
