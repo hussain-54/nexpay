@@ -7,16 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#7C3AED",
+        primary: "#6366F1", // Indigo Neon
         accent: "#10B981",
         danger: "#EF4444",
         warning: "#F59E0B",
-        bgDark: "#F3F4F6", // renamed visually, but kept variable name to avoid massive code rewrite
-        bgLight: "#FFFFFF",
-        card: "#FFFFFF",
-        borderDark: "#E5E7EB",
-        textPrimary: "#111827",
-        textMuted: "#6B7280"
+        bgDark: "#05050A", // Deep Midnight Black
+        bgLight: "#13131A", // Slight elevation
+        card: "#13131A",    // Card background
+        borderDark: "#2A2A35",
+        textPrimary: "#F9FAFB", // Crisp White
+        textMuted: "#9CA3AF"
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

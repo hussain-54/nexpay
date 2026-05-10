@@ -10,10 +10,10 @@ export const Button = React.forwardRef(({ className, variant = 'primary', size =
   const baseStyles = "inline-flex items-center justify-center font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none rounded-xl";
   
   const variants = {
-    primary: "bg-primary text-white hover:bg-opacity-90 shadow-sm",
-    secondary: "bg-card text-textPrimary border border-borderDark hover:bg-opacity-80 shadow-sm",
-    danger: "bg-danger text-white hover:bg-opacity-90 shadow-sm",
-    ghost: "bg-transparent hover:bg-card text-textPrimary",
+    primary: "bg-primary text-white hover:bg-opacity-90 shadow-lg shadow-primary/20",
+    secondary: "bg-white/5 backdrop-blur-md text-textPrimary border border-white/10 hover:bg-white/10 shadow-sm",
+    danger: "bg-danger text-white hover:bg-opacity-90 shadow-lg shadow-danger/20",
+    ghost: "bg-transparent hover:bg-white/5 text-textPrimary",
   };
 
   const sizes = {
@@ -42,7 +42,7 @@ export const Input = React.forwardRef(({ className, label, error, ...props }, re
       <input
         ref={ref}
         className={cn(
-          "h-12 w-full rounded-xl border border-borderDark bg-white px-4 py-2 text-textPrimary placeholder:text-textMuted focus:outline-none focus:border-primary transition-colors",
+          "h-12 w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-md px-4 py-2 text-textPrimary placeholder:text-textMuted focus:outline-none focus:border-primary focus:bg-white/10 transition-colors",
           error && "border-danger focus:border-danger",
           className
         )}
@@ -54,7 +54,7 @@ export const Input = React.forwardRef(({ className, label, error, ...props }, re
 });
 
 export const Card = ({ className, children, ...props }) => (
-  <div className={cn("rounded-2xl border border-borderDark bg-card p-4", className)} {...props}>
+  <div className={cn("rounded-2xl border border-white/10 bg-[#12121A]/80 backdrop-blur-xl p-4 shadow-xl", className)} {...props}>
     {children}
   </div>
 );
@@ -73,7 +73,7 @@ export const Select = React.forwardRef(({ className, label, options = [], ...pro
       <select
         ref={ref}
         className={cn(
-          "h-12 w-full rounded-xl border border-borderDark bg-white px-4 py-2 text-textPrimary focus:outline-none focus:border-primary transition-colors appearance-none",
+          "h-12 w-full rounded-xl border border-white/10 bg-[#12121A] px-4 py-2 text-textPrimary focus:outline-none focus:border-primary transition-colors appearance-none",
           className
         )}
         {...props}

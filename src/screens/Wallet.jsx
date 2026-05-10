@@ -49,16 +49,16 @@ export const Wallet = () => {
           </button>
         </div>
 
-        <div className="flex bg-card p-1 rounded-xl mb-6 border border-borderDark">
+        <div className="flex bg-card/50 p-1 rounded-xl mb-6 border border-white/5 backdrop-blur-md">
           <button 
             onClick={() => setActiveTab('assets')} 
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'assets' ? 'bg-white shadow-sm text-textPrimary' : 'text-textMuted hover:text-textPrimary'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'assets' ? 'bg-white/10 shadow-sm text-white' : 'text-textMuted hover:text-white'}`}
           >
             Assets & Swap
           </button>
           <button 
             onClick={() => setActiveTab('topup')} 
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'topup' ? 'bg-white shadow-sm text-textPrimary' : 'text-textMuted hover:text-textPrimary'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'topup' ? 'bg-white/10 shadow-sm text-white' : 'text-textMuted hover:text-white'}`}
           >
             Top-Up
           </button>
@@ -103,17 +103,17 @@ export const Wallet = () => {
 
             <div className="space-y-3 pt-4">
               <h2 className="text-sm font-bold text-textMuted">Swap Tokens (Simulated)</h2>
-              <div className="bg-white p-4 rounded-3xl shadow-sm border border-borderDark space-y-2 relative">
+              <div className="bg-card/50 backdrop-blur-md p-4 rounded-3xl shadow-lg border border-white/5 space-y-2 relative">
                 
                 {/* From Box */}
-                <div className="bg-gray-50 rounded-2xl p-4 border border-transparent focus-within:border-primary transition-colors">
+                <div className="bg-black/20 rounded-2xl p-4 border border-transparent focus-within:border-primary/50 transition-colors">
                   <p className="text-xs text-textMuted font-medium mb-2">You Pay</p>
                   <div className="flex items-center justify-between">
-                    <Select value={swapFrom} onChange={(e) => setSwapFrom(e.target.value)} options={[{label:'USDC', value:'USDC'}, {label:'SOL', value:'SOL'}]} className="w-24 bg-white border-borderDark h-10 text-sm shadow-sm" />
+                    <Select value={swapFrom} onChange={(e) => setSwapFrom(e.target.value)} options={[{label:'USDC', value:'USDC'}, {label:'SOL', value:'SOL'}]} className="w-24 bg-white/5 border-white/10 h-10 text-sm shadow-sm text-white" />
                     <input 
                       type="number" min="0" step="0.01" placeholder="0" 
                       value={swapAmount} onChange={(e) => setSwapAmount(e.target.value)} 
-                      className="bg-transparent text-right font-mono text-3xl font-bold w-full ml-4 focus:outline-none placeholder:text-gray-300" 
+                      className="bg-transparent text-right font-mono text-3xl font-bold w-full ml-4 focus:outline-none placeholder:text-gray-600 text-white" 
                     />
                   </div>
                 </div>
@@ -122,27 +122,27 @@ export const Wallet = () => {
                 <div className="absolute left-1/2 top-[102px] -translate-x-1/2 -translate-y-1/2 z-10">
                   <button 
                     onClick={() => { const temp = swapFrom; setSwapFrom(swapTo); setSwapTo(temp); }}
-                    className="w-10 h-10 rounded-xl bg-white border-2 border-gray-50 shadow-sm flex items-center justify-center hover:bg-gray-50 transition-colors"
+                    className="w-10 h-10 rounded-xl bg-bgDark border-2 border-borderDark shadow-sm flex items-center justify-center hover:bg-white/5 transition-colors"
                   >
                     <ArrowDownUp size={16} className="text-primary" />
                   </button>
                 </div>
 
                 {/* To Box */}
-                <div className="bg-gray-50 rounded-2xl p-4 border border-transparent focus-within:border-primary transition-colors">
+                <div className="bg-black/20 rounded-2xl p-4 border border-transparent focus-within:border-primary/50 transition-colors">
                   <p className="text-xs text-textMuted font-medium mb-2">You Receive</p>
                   <div className="flex items-center justify-between">
-                    <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-24 bg-white border-borderDark h-10 text-sm shadow-sm" />
+                    <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-24 bg-white/5 border-white/10 h-10 text-sm shadow-sm text-white" />
                     <input 
                       type="text" readOnly 
                       value={swapAmount ? (Number(swapAmount) * 0.99).toFixed(4) : '0'} 
-                      className="bg-transparent text-right font-mono text-3xl font-bold w-full ml-4 focus:outline-none text-textPrimary" 
+                      className="bg-transparent text-right font-mono text-3xl font-bold w-full ml-4 focus:outline-none text-white" 
                     />
                   </div>
                 </div>
 
                 <div className="pt-2">
-                  <Button onClick={handleSwap} disabled={!swapAmount || Number(swapAmount) <= 0} isLoading={isSwapping} className="w-full text-white font-bold h-14 rounded-2xl">
+                  <Button onClick={handleSwap} disabled={!swapAmount || Number(swapAmount) <= 0} isLoading={isSwapping} className="w-full text-white font-bold h-14 rounded-2xl shadow-primary/20">
                     Confirm Swap
                   </Button>
                 </div>
@@ -160,7 +160,7 @@ export const Wallet = () => {
                 {publicKey ? (
                   <QRCodeSVG value={publicKey.toString()} size={140} />
                 ) : (
-                  <div className="w-[140px] h-[140px] bg-gray-100 flex items-center justify-center text-xs text-gray-400">No Wallet</div>
+                  <div className="w-[140px] h-[140px] bg-gray-800 flex items-center justify-center text-xs text-gray-500">No Wallet</div>
                 )}
               </div>
               <p className="font-mono text-xs break-all text-center text-textMuted">{publicKey?.toString() || 'Not Connected'}</p>

@@ -152,7 +152,7 @@ export const SendMoney = () => {
       <div className="flex flex-col h-full bg-bgDark">
         <div className="flex items-center p-4 border-b border-borderDark relative">
           {step < 4 && (
-            <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-card">
+            <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-white/5 transition-colors">
               <ChevronLeft size={24} />
             </button>
           )}
@@ -160,7 +160,7 @@ export const SendMoney = () => {
         </div>
 
         {step < 4 && (
-          <div className="w-full h-1 bg-card">
+          <div className="w-full h-1 bg-white/10">
             <div className="h-full bg-primary transition-all" style={{ width: `${(step / 3) * 100}%` }} />
           </div>
         )}
@@ -172,7 +172,7 @@ export const SendMoney = () => {
                 <label className="text-sm text-textMuted mb-2 block">You send</label>
                 <div className="flex space-x-2">
                   <div className="w-24">
-                    <Select options={[{label:'USDC', value:'USDC'}]} defaultValue="USDC" disabled className="bg-card" />
+                    <Select options={[{label:'USDC', value:'USDC'}]} defaultValue="USDC" disabled className="bg-transparent shadow-none" />
                   </div>
                   <div className="flex-1">
                     <Input
@@ -191,7 +191,7 @@ export const SendMoney = () => {
               </div>
 
               <div className="flex justify-center -my-2 relative z-10">
-                <div className="w-8 h-8 rounded-full bg-card border border-borderDark flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-bgDark border border-borderDark flex items-center justify-center">
                   <RefreshCcw size={14} className="text-primary" />
                 </div>
               </div>
@@ -204,14 +204,14 @@ export const SendMoney = () => {
                       value={currency} 
                       onChange={(e) => setCurrency(e.target.value)}
                       options={Object.keys(rates).map(c => ({ label: c.toUpperCase(), value: c }))}
-                      className="bg-card"
+                      className="bg-transparent shadow-none"
                     />
                   </div>
                   <Input
                     type="text"
                     readOnly
                     value={amount ? receivedAmount.toLocaleString('en-US', { maximumFractionDigits: 2 }) : '0.00'}
-                    className="font-mono text-xl bg-card"
+                    className="font-mono text-xl bg-transparent shadow-none"
                   />
                 </div>
                 <div className="flex justify-between items-center mt-2">

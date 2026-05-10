@@ -58,7 +58,7 @@ export const Receive = () => {
         </div>
 
         <div className="flex-1 flex flex-col items-center">
-          <div className="bg-white p-6 rounded-3xl mb-6 shadow-sm border border-borderDark flex flex-col items-center">
+          <div className="bg-white p-6 rounded-3xl mb-6 shadow-2xl flex flex-col items-center">
             {requestLink ? (
               <QRCodeSVG value={requestLink} size={200} />
             ) : walletAddress ? (
@@ -71,21 +71,21 @@ export const Receive = () => {
           </div>
 
           <p className="text-sm font-medium text-textMuted mb-2">Your Wallet Address</p>
-          <div className="w-full flex items-center justify-between mb-4 p-4 bg-white rounded-2xl shadow-sm border border-borderDark">
-            <span className="font-mono text-sm truncate mr-4 text-textPrimary">{walletAddress}</span>
+          <div className="w-full flex items-center justify-between mb-4 p-4 bg-card/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/5">
+            <span className="font-mono text-sm truncate mr-4 text-white">{walletAddress}</span>
             <div className="flex space-x-2 shrink-0">
-              <button onClick={handleCopy} className="p-2.5 bg-gray-50 border border-borderDark rounded-xl hover:bg-gray-100 transition-colors">
-                <Copy size={16} className="text-textPrimary" />
+              <button onClick={handleCopy} className="p-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+                <Copy size={16} className="text-white" />
               </button>
             </div>
           </div>
 
-          <Button variant="secondary" size="sm" onClick={handleAirdrop} isLoading={isAirdropping} className="mb-8 bg-white border-borderDark shadow-sm">
+          <Button variant="secondary" size="sm" onClick={handleAirdrop} isLoading={isAirdropping} className="mb-8">
             <Droplets size={14} className="mr-2" /> Get devnet SOL
           </Button>
 
-          <div className="w-full mt-auto bg-white p-5 rounded-3xl shadow-sm border border-borderDark">
-            <h3 className="text-base font-bold mb-4 text-center">Request Specific Amount</h3>
+          <div className="w-full mt-auto bg-card/80 backdrop-blur-md p-5 rounded-3xl shadow-lg border border-white/5">
+            <h3 className="text-base font-bold mb-4 text-center text-white">Request Specific Amount</h3>
             <div className="flex flex-col space-y-3 mb-5">
               <Select 
                 value={currency} 
@@ -94,7 +94,7 @@ export const Receive = () => {
                   { label: 'USDC - USD Coin', value: 'USDC' },
                   { label: 'USDT - Tether', value: 'USDT' }
                 ]}
-                className="w-full bg-gray-50 border-transparent focus:border-primary text-base h-14"
+                className="w-full bg-black/20 border-white/10 focus:border-primary text-base h-14 text-white"
               />
               <Input 
                 type="number" 
@@ -103,10 +103,10 @@ export const Receive = () => {
                 placeholder="0.00" 
                 value={amount} 
                 onChange={(e) => setAmount(e.target.value)} 
-                className="font-mono text-2xl h-16 text-center bg-gray-50 border-transparent focus:border-primary placeholder:text-gray-300"
+                className="font-mono text-2xl h-16 text-center bg-black/20 border-white/10 focus:border-primary placeholder:text-gray-600 text-white"
               />
             </div>
-            <Button onClick={handleGenerateLink} size="lg" className="w-full text-white font-bold h-14" disabled={!amount || amount <= 0}>
+            <Button onClick={handleGenerateLink} size="lg" className="w-full text-white font-bold h-14 shadow-primary/20" disabled={!amount || amount <= 0}>
               <LinkIcon size={18} className="mr-2" /> Generate Request Link
             </Button>
           </div>

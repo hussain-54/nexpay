@@ -66,18 +66,18 @@ export const Home = () => {
         
         <div className="flex items-center space-x-2">
           {shortAddress && (
-            <button onClick={copyAddress} className="flex items-center space-x-1 px-3 py-1.5 bg-white shadow-sm border border-borderDark rounded-full text-xs font-mono hover:bg-gray-50 transition-colors">
+            <button onClick={copyAddress} className="flex items-center space-x-1 px-3 py-1.5 bg-card shadow-sm border border-borderDark rounded-full text-xs font-mono hover:bg-white/5 transition-colors">
               <WalletIcon size={12} className="text-primary" />
               <span>{shortAddress}</span>
             </button>
           )}
-          <button onClick={openExplorer} className="p-2 rounded-full bg-white shadow-sm border border-borderDark hover:bg-gray-50 transition-colors">
+          <button onClick={openExplorer} className="p-2 rounded-full bg-card shadow-sm border border-borderDark hover:bg-white/5 transition-colors">
             <ExternalLink size={16} className="text-textMuted hover:text-primary transition-colors" />
           </button>
-          <button onClick={() => navigate('/notifications')} className="relative p-2 rounded-full bg-white shadow-sm border border-borderDark hover:bg-gray-50 transition-colors">
+          <button onClick={() => navigate('/notifications')} className="relative p-2 rounded-full bg-card shadow-sm border border-borderDark hover:bg-white/5 transition-colors">
             <Bell size={16} className="text-textPrimary" />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-danger rounded-full border-2 border-white"></span>
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-danger rounded-full border-2 border-bgDark"></span>
             )}
           </button>
         </div>
@@ -91,16 +91,16 @@ export const Home = () => {
       )}
 
       {/* Premium Balance Card */}
-      <div className="flex flex-col items-center justify-center py-10 relative overflow-hidden group bg-white rounded-3xl shadow-sm border border-borderDark">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-        <button onClick={refreshBalances} className="absolute top-4 right-4 p-2 bg-gray-50 rounded-full hover:bg-primary/10 transition-colors opacity-0 group-hover:opacity-100 shadow-sm border border-borderDark">
+      <div className="flex flex-col items-center justify-center py-10 relative overflow-hidden group bg-card rounded-3xl shadow-2xl border border-white/5">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
+        <button onClick={refreshBalances} className="absolute top-4 right-4 p-2 bg-white/5 backdrop-blur-sm rounded-full hover:bg-primary/20 transition-colors opacity-0 group-hover:opacity-100 shadow-sm border border-white/10">
           <RefreshCcw size={16} className="text-textMuted hover:text-primary" />
         </button>
         <p className="text-sm text-textMuted font-medium z-10">Total Balance</p>
-        <h1 className="text-5xl font-mono font-bold mt-2 z-10 tracking-tight text-textPrimary text-center break-all px-4">${usdcBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}<span className="text-2xl text-textMuted font-medium ml-2">USDC</span></h1>
+        <h1 className="text-5xl font-mono font-bold mt-2 z-10 tracking-tight text-white text-center break-all px-4">${usdcBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}<span className="text-2xl text-textMuted font-medium ml-2">USDC</span></h1>
         
         <div className="flex space-x-2 mt-5 z-10">
-          <div className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+          <div className="px-3 py-1.5 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider backdrop-blur-md">
             Tier: {user?.tier || 'Free'}
           </div>
         </div>
