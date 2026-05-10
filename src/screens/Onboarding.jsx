@@ -83,20 +83,25 @@ export const Onboarding = () => {
   if (step === 'slides') {
     const SlideIcon = slides[slideIndex].icon;
     return (
-      <div className="flex flex-col h-full p-6 text-center bg-bgDark">
-        <div className="flex-1 flex flex-col justify-center items-center space-y-8">
-          <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
-            <SlideIcon className="w-16 h-16 text-primary" />
+      <div className="flex flex-col h-full p-6 text-center bg-gradient-to-br from-bgDark via-bgDark to-primary/10 relative overflow-hidden">
+        {/* Glow effect */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
+        
+        <div className="flex-1 flex flex-col justify-center items-center space-y-8 z-10">
+          <div className="w-32 h-32 rounded-[2rem] bg-card/40 backdrop-blur-md border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] flex items-center justify-center transform transition-transform hover:scale-105">
+            <SlideIcon className="w-14 h-14 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
           </div>
-          <h1 className="text-3xl font-bold">{slides[slideIndex].title}</h1>
-          <p className="text-textMuted text-lg">{slides[slideIndex].text}</p>
+          <div className="space-y-4">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white leading-tight px-4">{slides[slideIndex].title}</h1>
+            <p className="text-textMuted text-lg px-6">{slides[slideIndex].text}</p>
+          </div>
         </div>
-        <div className="flex space-x-2 justify-center mb-8">
+        <div className="flex space-x-2 justify-center mb-8 z-10">
           {slides.map((_, i) => (
-            <div key={i} className={`h-2 rounded-full transition-all ${i === slideIndex ? 'w-8 bg-primary' : 'w-2 bg-borderDark'}`} />
+            <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === slideIndex ? 'w-8 bg-primary shadow-[0_0_10px_rgba(99,102,241,0.8)]' : 'w-2 bg-white/10'}`} />
           ))}
         </div>
-        <Button onClick={handleNextSlide} size="lg">Continue</Button>
+        <Button onClick={handleNextSlide} size="lg" className="z-10 shadow-lg shadow-primary/20 font-bold tracking-wide">Continue</Button>
       </div>
     );
   }
@@ -104,12 +109,21 @@ export const Onboarding = () => {
   if (step === 'auth') {
     return (
       <WalletGuard>
-        <div className="flex flex-col h-full p-6 justify-center space-y-4 bg-bgDark">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-primary mb-2">NexPay</h1>
-            <p className="text-textMuted">Welcome to the future of money</p>
+        <div className="flex flex-col h-full p-6 justify-center bg-gradient-to-b from-bgDark to-card relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
+          
+          <div className="flex-1 flex flex-col justify-center items-center text-center space-y-4 z-10">
+            <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center mb-4 border border-primary/30 backdrop-blur-md shadow-[0_0_30px_rgba(99,102,241,0.3)]">
+              <Zap className="w-10 h-10 text-primary" />
+            </div>
+            <h1 className="text-5xl font-extrabold text-white tracking-tight">NexPay</h1>
+            <p className="text-textMuted text-lg max-w-[250px]">The future of global finance.</p>
           </div>
-          <Button onClick={() => setStep('signup')} size="lg">Sign Up</Button>
+          
+          <div className="flex flex-col space-y-3 z-10 mb-8">
+            <Button onClick={() => setStep('signup')} size="lg" className="w-full shadow-lg shadow-primary/20 font-bold">Create Account</Button>
+            <Button variant="secondary" onClick={() => navigate('/home')} size="lg" className="w-full font-bold">Log In</Button>
+          </div>
         </div>
       </WalletGuard>
     );
@@ -118,16 +132,26 @@ export const Onboarding = () => {
   if (step === 'signup') {
     return (
       <WalletGuard>
-        <div className="flex flex-col h-full p-6 justify-center overflow-y-auto bg-bgDark">
-          <h2 className="text-2xl font-bold mb-6">Create Account</h2>
-          <form onSubmit={handleSignupSubmit} className="space-y-4">
-            <Input label="Full Name" placeholder="John Doe" value={username} onChange={e => setUsername(e.target.value)} error={errors.username} />
-            <Input label="Email" type="email" placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} error={errors.email} />
-            <Input label="Phone Number" type="tel" placeholder="+1 234 567 8900" value={phone} onChange={e => setPhone(e.target.value)} error={errors.phone} />
-            <Input label="Password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} error={errors.password} />
-            <Button type="submit" size="lg" className="w-full mt-4">Create Account</Button>
-          </form>
-          <Button variant="ghost" onClick={() => setStep('auth')} className="mt-4">Back</Button>
+        <div className="flex flex-col h-full bg-bgDark">
+          <div className="flex items-center p-4 border-b border-white/5 relative shrink-0">
+            <button onClick={() => setStep('auth')} className="p-2 -ml-2 rounded-full hover:bg-white/5 transition-colors">
+              <ChevronLeft size={24} className="text-white" />
+            </button>
+            <h1 className="text-lg font-bold flex-1 text-center pr-8 text-white">Create Account</h1>
+          </div>
+          
+          <div className="flex-1 p-6 overflow-y-auto">
+            <form onSubmit={handleSignupSubmit} className="space-y-5">
+              <Input label="Full Name" placeholder="John Doe" value={username} onChange={e => setUsername(e.target.value)} error={errors.username} />
+              <Input label="Email Address" type="email" placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} error={errors.email} />
+              <Input label="Phone Number" type="tel" placeholder="+1 234 567 8900" value={phone} onChange={e => setPhone(e.target.value)} error={errors.phone} />
+              <Input label="Password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} error={errors.password} />
+              
+              <div className="pt-4 pb-8">
+                <Button type="submit" size="lg" className="w-full shadow-lg shadow-primary/20 font-bold">Continue</Button>
+              </div>
+            </form>
+          </div>
         </div>
       </WalletGuard>
     );
@@ -137,62 +161,90 @@ export const Onboarding = () => {
     const kycStep = parseInt(step.replace('kyc', ''));
     return (
       <WalletGuard>
-        <div className="flex flex-col h-full p-6 bg-bgDark">
-          <div className="mb-8 mt-4">
-            <p className="text-sm text-textMuted mb-2">Step {kycStep} of 3</p>
-            <div className="flex space-x-2">
-              {[1, 2, 3].map(i => (
-                <div key={i} className={`h-1 flex-1 rounded-full ${i <= kycStep ? 'bg-primary' : 'bg-borderDark'}`} />
-              ))}
-            </div>
+        <div className="flex flex-col h-full bg-bgDark">
+          <div className="flex items-center p-4 border-b border-white/5 relative shrink-0">
+            <button onClick={() => setStep(kycStep === 1 ? 'signup' : `kyc${kycStep - 1}`)} className="p-2 -ml-2 rounded-full hover:bg-white/5 transition-colors">
+              <ChevronLeft size={24} className="text-white" />
+            </button>
+            <h1 className="text-lg font-bold flex-1 text-center pr-8 text-white">Verification</h1>
           </div>
 
-          {kycStep === 1 && (
-            <div className="flex-1 flex flex-col space-y-6">
-              <h2 className="text-2xl font-bold">Upload ID</h2>
-              <Card className="border-dashed border-2 bg-transparent flex flex-col items-center justify-center p-8 cursor-pointer hover:bg-card/50 transition-colors">
-                <ImageIcon className="w-12 h-12 text-textMuted mb-4" />
-                <p className="font-medium text-textMuted">Tap to upload Front of ID</p>
-              </Card>
-              <Card className="border-dashed border-2 bg-transparent flex flex-col items-center justify-center p-8 cursor-pointer hover:bg-card/50 transition-colors">
-                <ImageIcon className="w-12 h-12 text-textMuted mb-4" />
-                <p className="font-medium text-textMuted">Tap to upload Back of ID</p>
-              </Card>
-              <div className="mt-auto">
-                <Button onClick={() => setStep('kyc2')} size="lg" className="w-full">Continue</Button>
+          <div className="flex-1 p-6 flex flex-col overflow-y-auto">
+            <div className="mb-8">
+              <div className="flex justify-between items-center mb-3">
+                <p className="text-sm font-medium text-white">Step {kycStep} of 3</p>
+                <p className="text-xs text-textMuted">{kycStep === 1 ? 'ID Upload' : kycStep === 2 ? 'Selfie' : 'Address'}</p>
+              </div>
+              <div className="flex space-x-2">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-300 ${i <= kycStep ? 'bg-primary shadow-[0_0_8px_rgba(99,102,241,0.5)]' : 'bg-white/10'}`} />
+                ))}
               </div>
             </div>
-          )}
 
-          {kycStep === 2 && (
-            <div className="flex-1 flex flex-col space-y-6">
-              <h2 className="text-2xl font-bold">Take Selfie</h2>
-              <div className="flex-1 bg-card rounded-2xl flex items-center justify-center relative overflow-hidden">
-                <div className="w-48 h-64 border-4 border-dashed border-textMuted rounded-full opacity-50 absolute" />
-                <Camera className="w-16 h-16 text-textMuted" />
-              </div>
-              <div className="mt-auto">
-                <Button onClick={() => setStep('kyc3')} size="lg" className="w-full">Take Selfie</Button>
-              </div>
-            </div>
-          )}
-
-          {kycStep === 3 && (
-            <div className="flex-1 flex flex-col space-y-6 overflow-y-auto pb-4">
-              <h2 className="text-2xl font-bold">Verify Address</h2>
-              <div className="space-y-4">
-                <Input label="Street Address" placeholder="123 Main St" />
-                <div className="grid grid-cols-2 gap-4">
-                  <Input label="City" placeholder="New York" />
-                  <Input label="Postal Code" placeholder="10001" />
+            {kycStep === 1 && (
+              <div className="flex-1 flex flex-col space-y-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-2">Upload your ID</h2>
+                  <p className="text-textMuted text-sm">Please ensure all text is legible and well-lit.</p>
                 </div>
-                <Input label="Phone OTP" placeholder="123456" />
+                <Card className="border-dashed border-2 border-white/10 bg-black/20 flex flex-col items-center justify-center p-10 cursor-pointer hover:bg-white/5 hover:border-primary/50 transition-all rounded-[2rem]">
+                  <ImageIcon className="w-12 h-12 text-textMuted mb-4" />
+                  <p className="font-semibold text-white">Front of ID</p>
+                  <p className="text-xs text-textMuted mt-1">Tap to scan</p>
+                </Card>
+                <Card className="border-dashed border-2 border-white/10 bg-black/20 flex flex-col items-center justify-center p-10 cursor-pointer hover:bg-white/5 hover:border-primary/50 transition-all rounded-[2rem]">
+                  <ImageIcon className="w-12 h-12 text-textMuted mb-4" />
+                  <p className="font-semibold text-white">Back of ID</p>
+                  <p className="text-xs text-textMuted mt-1">Tap to scan</p>
+                </Card>
+                <div className="mt-auto pt-8 pb-4">
+                  <Button onClick={() => setStep('kyc2')} size="lg" className="w-full font-bold">Continue</Button>
+                </div>
               </div>
-              <div className="mt-auto">
-                <Button onClick={handleFinishSetup} size="lg" isLoading={isLoading} className="w-full">Complete Setup</Button>
+            )}
+
+            {kycStep === 2 && (
+              <div className="flex-1 flex flex-col space-y-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-2">Take a Selfie</h2>
+                  <p className="text-textMuted text-sm">Position your face within the oval.</p>
+                </div>
+                <div className="flex-1 bg-black/40 border border-white/5 rounded-[2rem] flex items-center justify-center relative overflow-hidden backdrop-blur-md">
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 pointer-events-none" />
+                  <div className="w-56 h-72 border-4 border-dashed border-white/30 rounded-full flex flex-col items-center justify-center z-10 shadow-[0_0_50px_rgba(0,0,0,0.5)_inset]">
+                    <Camera className="w-16 h-16 text-white/50 mb-4" />
+                    <span className="text-xs font-medium text-white/70 tracking-widest uppercase">Align Face</span>
+                  </div>
+                </div>
+                <div className="mt-auto pt-8 pb-4">
+                  <Button onClick={() => setStep('kyc3')} size="lg" className="w-full font-bold shadow-lg shadow-primary/20">Capture</Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {kycStep === 3 && (
+              <div className="flex-1 flex flex-col">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-white mb-2">Verify Address</h2>
+                  <p className="text-textMuted text-sm">Enter your residential address exactly as it appears on your ID.</p>
+                </div>
+                <div className="space-y-5 flex-1">
+                  <Input label="Street Address" placeholder="123 Financial District" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <Input label="City" placeholder="New York" />
+                    <Input label="Postal Code" placeholder="10001" />
+                  </div>
+                  <div className="pt-4 border-t border-white/10 mt-6">
+                    <Input label="Phone Verification OTP" placeholder="6-digit code" type="number" className="tracking-widest font-mono text-lg" />
+                  </div>
+                </div>
+                <div className="mt-auto pt-8 pb-4">
+                  <Button onClick={handleFinishSetup} size="lg" isLoading={isLoading} className="w-full font-bold shadow-lg shadow-primary/20">Complete Registration</Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </WalletGuard>
     );

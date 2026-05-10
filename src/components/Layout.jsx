@@ -9,7 +9,7 @@ export const BottomNav = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { icon: Home, label: 'Home', path: '/' },
+    { icon: Home, label: 'Home', path: '/home' },
     { icon: Send, label: 'Send', path: '/send' },
     { icon: Download, label: 'Receive', path: '/receive' },
     { icon: Wallet, label: 'Wallet', path: '/wallet' },
@@ -17,20 +17,42 @@ export const BottomNav = () => {
   ];
 
   return (
-    <div className="absolute bottom-0 w-full h-20 bg-[#0F0F13]/90 backdrop-blur-md border-t border-borderDark flex justify-around items-center px-2 z-50">
+    <div className="absolute bottom-0 w-full h-[84px] bg-[#0A0A0F]/90 backdrop-blur-xl border-t border-white/5 flex justify-around items-center px-4 pb-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
       {navItems.map((item) => {
-        const isActive = location.pathname === item.path;
+        const isActive = location.pathname === item.path || (item.path === '/home' && location.pathname === '/');
         return (
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className={cn(
-              "flex flex-col items-center justify-center w-16 h-full space-y-1 transition-colors",
-              isActive ? "text-primary" : "text-textMuted hover:text-textPrimary"
-            )}
+            className="group relative flex flex-col items-center justify-center w-16 h-full transition-all duration-300"
           >
-            <item.icon size={24} />
-            <span className="text-[10px] font-medium">{item.label}</span>
+            {/* Active Pill Background */}
+            <div className={cn(
+              "absolute inset-0 top-2 bottom-4 rounded-2xl transition-all duration-300 -z-10",
+              isActive ? "bg-white/5 scale-100 opacity-100" : "scale-50 opacity-0"
+            )} />
+            
+            {/* Icon */}
+            <item.icon 
+              size={isActive ? 24 : 22} 
+              className={cn(
+                "mb-1 transition-all duration-300",
+                isActive ? "text-primary transform -translate-y-0.5" : "text-textMuted group-hover:text-textPrimary"
+              )} 
+            />
+            
+            {/* Label */}
+            <span className={cn(
+              "text-[10px] font-semibold tracking-wide transition-colors duration-300",
+              isActive ? "text-textPrimary" : "text-textMuted"
+            )}>
+              {item.label}
+            </span>
+
+            {/* Active Dot Indicator */}
+            {isActive && (
+              <div className="absolute bottom-2 w-1 h-1 rounded-full bg-primary shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
+            )}
           </button>
         );
       })}
