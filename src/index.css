@@ -9,24 +9,37 @@
 
 /* Mobile Wrapper Constraints for Desktop */
 #root {
-  @apply mx-auto w-full min-h-screen relative overflow-x-hidden flex flex-col bg-bgDark;
-  max-width: 390px;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); /* Strong shadow for desktop view */
+  @apply mx-auto w-full min-h-[100dvh] relative overflow-x-hidden flex flex-col bg-bgDark;
 }
 
-@media (min-width: 391px) {
+@media (min-width: 640px) {
   #root {
+    max-width: 430px;
     min-height: 844px; /* iPhone Pro height constraint */
-    max-height: 100vh;
+    max-height: 96vh;
     border: 1px solid #1f1f2e;
     margin-top: 2vh;
     margin-bottom: 2vh;
     border-radius: 40px;
     overflow: hidden;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
   }
   
   body {
     @apply bg-[#05050A] flex justify-center items-center;
+  }
+}
+
+/* Safe Area Utilities */
+@layer utilities {
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .min-h-safe {
+    min-height: calc(100vh - env(safe-area-inset-bottom) - env(safe-area-inset-top));
   }
 }
 

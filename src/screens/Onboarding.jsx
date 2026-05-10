@@ -106,11 +106,11 @@ export const Onboarding = () => {
   if (step === 'slides') {
     const SlideIcon = slides[slideIndex].icon;
     return (
-      <div className="flex flex-col h-full p-6 text-center bg-gradient-to-br from-bgDark via-bgDark to-primary/10 relative overflow-hidden">
+      <div className="flex flex-col h-full px-6 pt-safe pb-safe text-center bg-gradient-to-br from-bgDark via-bgDark to-primary/10 relative overflow-hidden">
         {/* Glow effect */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
         
-        <div className="flex-1 flex flex-col justify-center items-center space-y-8 z-10">
+        <div className="flex-1 flex flex-col justify-center items-center space-y-8 z-10 w-full max-w-sm mx-auto mt-4">
           <div className="w-32 h-32 rounded-[2rem] bg-card/40 backdrop-blur-md border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] flex items-center justify-center transform transition-transform hover:scale-105">
             <SlideIcon className="w-14 h-14 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
           </div>
@@ -124,7 +124,9 @@ export const Onboarding = () => {
             <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === slideIndex ? 'w-8 bg-primary shadow-[0_0_10px_rgba(99,102,241,0.8)]' : 'w-2 bg-white/10'}`} />
           ))}
         </div>
-        <Button onClick={handleNextSlide} size="lg" className="z-10 shadow-lg shadow-primary/20 font-bold tracking-wide">Continue</Button>
+        <div className="w-full max-w-sm mx-auto z-10 pb-6">
+          <Button onClick={handleNextSlide} size="lg" className="w-full shadow-lg shadow-primary/20 font-bold tracking-wide rounded-2xl h-14">Continue</Button>
+        </div>
       </div>
     );
   }
@@ -132,20 +134,20 @@ export const Onboarding = () => {
   if (step === 'auth') {
     return (
       <WalletGuard>
-        <div className="flex flex-col h-full p-6 justify-center bg-gradient-to-b from-bgDark to-card relative overflow-hidden">
+        <div className="flex flex-col h-full px-6 pt-safe pb-safe justify-between bg-gradient-to-b from-bgDark to-card relative overflow-hidden">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
           
-          <div className="flex-1 flex flex-col justify-center items-center text-center space-y-4 z-10">
-            <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center mb-4 border border-primary/30 backdrop-blur-md shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-              <Zap className="w-10 h-10 text-primary" />
+          <div className="flex-1 flex flex-col justify-center items-center text-center space-y-6 z-10 w-full max-w-sm mx-auto">
+            <div className="w-24 h-24 bg-primary/20 rounded-[2rem] flex items-center justify-center mb-2 border border-primary/30 backdrop-blur-md shadow-[0_0_40px_rgba(99,102,241,0.3)]">
+              <Zap className="w-12 h-12 text-primary" />
             </div>
             <h1 className="text-5xl font-extrabold text-white tracking-tight">NexPay</h1>
-            <p className="text-textMuted text-lg max-w-[250px]">The future of global finance.</p>
+            <p className="text-textMuted text-lg max-w-[280px]">The future of global finance.</p>
           </div>
           
-          <div className="flex flex-col space-y-3 z-10 mb-8">
-            <Button onClick={() => setStep('signup')} size="lg" className="w-full shadow-lg shadow-primary/20 font-bold">Create Account</Button>
-            <Button variant="secondary" onClick={handleLoginClick} isLoading={isLoading} size="lg" className="w-full font-bold">Log In</Button>
+          <div className="flex flex-col space-y-4 z-10 w-full max-w-sm mx-auto pb-6">
+            <Button onClick={() => setStep('signup')} size="lg" className="w-full shadow-lg shadow-primary/20 font-bold rounded-2xl h-14">Create Account</Button>
+            <Button variant="secondary" onClick={handleLoginClick} isLoading={isLoading} size="lg" className="w-full font-bold rounded-2xl h-14">Log In</Button>
           </div>
         </div>
       </WalletGuard>
@@ -155,23 +157,23 @@ export const Onboarding = () => {
   if (step === 'signup') {
     return (
       <WalletGuard>
-        <div className="flex flex-col h-full bg-bgDark">
-          <div className="flex items-center p-4 border-b border-white/5 relative shrink-0">
+        <div className="flex flex-col h-full bg-bgDark pt-safe pb-safe">
+          <div className="flex items-center px-4 py-6 border-b border-white/5 relative shrink-0">
             <button onClick={() => setStep('auth')} className="p-2 -ml-2 rounded-full hover:bg-white/5 transition-colors">
-              <ChevronLeft size={24} className="text-white" />
+              <ChevronLeft size={28} className="text-white" />
             </button>
-            <h1 className="text-lg font-bold flex-1 text-center pr-8 text-white">Create Account</h1>
+            <h1 className="text-xl font-bold flex-1 text-center pr-8 text-white">Create Account</h1>
           </div>
           
-          <div className="flex-1 p-6 overflow-y-auto">
+          <div className="flex-1 px-6 py-8 overflow-y-auto w-full max-w-sm mx-auto">
             <form onSubmit={handleSignupSubmit} className="space-y-5">
               <Input label="Full Name" placeholder="John Doe" value={username} onChange={e => setUsername(e.target.value)} error={errors.username} />
               <Input label="Email Address" type="email" placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} error={errors.email} />
               <Input label="Phone Number" type="tel" placeholder="+1 234 567 8900" value={phone} onChange={e => setPhone(e.target.value)} error={errors.phone} />
               <Input label="Password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} error={errors.password} />
               
-              <div className="pt-4 pb-8">
-                <Button type="submit" size="lg" className="w-full shadow-lg shadow-primary/20 font-bold">Continue</Button>
+              <div className="pt-6 pb-8">
+                <Button type="submit" size="lg" className="w-full shadow-lg shadow-primary/20 font-bold rounded-2xl h-14">Continue</Button>
               </div>
             </form>
           </div>
@@ -184,15 +186,15 @@ export const Onboarding = () => {
     const kycStep = parseInt(step.replace('kyc', ''));
     return (
       <WalletGuard>
-        <div className="flex flex-col h-full bg-bgDark">
-          <div className="flex items-center p-4 border-b border-white/5 relative shrink-0">
+        <div className="flex flex-col h-full bg-bgDark pt-safe pb-safe">
+          <div className="flex items-center px-4 py-6 border-b border-white/5 relative shrink-0">
             <button onClick={() => setStep(kycStep === 1 ? 'signup' : `kyc${kycStep - 1}`)} className="p-2 -ml-2 rounded-full hover:bg-white/5 transition-colors">
-              <ChevronLeft size={24} className="text-white" />
+              <ChevronLeft size={28} className="text-white" />
             </button>
-            <h1 className="text-lg font-bold flex-1 text-center pr-8 text-white">Verification</h1>
+            <h1 className="text-xl font-bold flex-1 text-center pr-8 text-white">Verification</h1>
           </div>
 
-          <div className="flex-1 p-6 flex flex-col overflow-y-auto">
+          <div className="flex-1 px-6 py-8 flex flex-col overflow-y-auto w-full max-w-sm mx-auto">
             <div className="mb-8">
               <div className="flex justify-between items-center mb-3">
                 <p className="text-sm font-medium text-white">Step {kycStep} of 3</p>
@@ -222,7 +224,7 @@ export const Onboarding = () => {
                   <p className="text-xs text-textMuted mt-1">Tap to scan</p>
                 </Card>
                 <div className="mt-auto pt-8 pb-4">
-                  <Button onClick={() => setStep('kyc2')} size="lg" className="w-full font-bold">Continue</Button>
+                  <Button onClick={() => setStep('kyc2')} size="lg" className="w-full font-bold rounded-2xl h-14">Continue</Button>
                 </div>
               </div>
             )}
@@ -241,7 +243,7 @@ export const Onboarding = () => {
                   </div>
                 </div>
                 <div className="mt-auto pt-8 pb-4">
-                  <Button onClick={() => setStep('kyc3')} size="lg" className="w-full font-bold shadow-lg shadow-primary/20">Capture</Button>
+                  <Button onClick={() => setStep('kyc3')} size="lg" className="w-full font-bold shadow-lg shadow-primary/20 rounded-2xl h-14">Capture</Button>
                 </div>
               </div>
             )}
@@ -263,7 +265,7 @@ export const Onboarding = () => {
                   </div>
                 </div>
                 <div className="mt-auto pt-8 pb-4">
-                  <Button onClick={handleFinishSetup} size="lg" isLoading={isLoading} className="w-full font-bold shadow-lg shadow-primary/20">Complete Registration</Button>
+                  <Button onClick={handleFinishSetup} size="lg" isLoading={isLoading} className="w-full font-bold shadow-lg shadow-primary/20 rounded-2xl h-14">Complete Registration</Button>
                 </div>
               </div>
             )}

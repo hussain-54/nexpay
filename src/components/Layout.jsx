@@ -17,14 +17,14 @@ export const BottomNav = () => {
   ];
 
   return (
-    <div className="absolute bottom-0 w-full h-[84px] bg-[#0A0A0F]/90 backdrop-blur-xl border-t border-white/5 flex justify-around items-center px-4 pb-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+    <div className="absolute bottom-0 w-full bg-[#0A0A0F]/90 backdrop-blur-xl border-t border-white/5 flex justify-around items-center px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
       {navItems.map((item) => {
         const isActive = location.pathname === item.path || (item.path === '/home' && location.pathname === '/');
         return (
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className="group relative flex flex-col items-center justify-center w-16 h-full transition-all duration-300"
+            className="group relative flex flex-col items-center justify-center w-16 h-16 transition-all duration-300"
           >
             {/* Active Pill Background */}
             <div className={cn(
