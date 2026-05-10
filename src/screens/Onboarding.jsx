@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Zap, CheckCircle2, Image as ImageIcon, Camera } from 'lucide-react';
+import { Globe, Zap, CheckCircle2, Image as ImageIcon, Camera, ChevronLeft } from 'lucide-react';
 import { Button, Input, Card } from '../components/ui';
 import { useStore } from '../store/useStore';
 import { useToast } from '../contexts/ToastContext';
@@ -44,6 +44,29 @@ export const Onboarding = () => {
   const handleNextSlide = () => {
     if (slideIndex < slides.length - 1) setSlideIndex(slideIndex + 1);
     else setStep('auth');
+  };
+
+  const handleLoginClick = async () => {
+    if (!walletAdapter) {
+      showToast("Please connect your wallet first.", "error");
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      const acc = await fetchUserAccount(walletAdapter);
+      if (acc) {
+        login({ name: acc.username, email: 'connected@wallet', tier: ['Free', 'Pro', 'Business'][acc.tier] || 'Free' });
+        navigate('/');
+        showToast("Welcome back!", "success");
+      } else {
+        showToast("No account found for this wallet. Please Create Account.", "error");
+      }
+    } catch (err) {
+      showToast("Error checking account.", "error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const validateSignup = () => {
@@ -122,7 +145,7 @@ export const Onboarding = () => {
           
           <div className="flex flex-col space-y-3 z-10 mb-8">
             <Button onClick={() => setStep('signup')} size="lg" className="w-full shadow-lg shadow-primary/20 font-bold">Create Account</Button>
-            <Button variant="secondary" onClick={() => navigate('/home')} size="lg" className="w-full font-bold">Log In</Button>
+            <Button variant="secondary" onClick={handleLoginClick} isLoading={isLoading} size="lg" className="w-full font-bold">Log In</Button>
           </div>
         </div>
       </WalletGuard>
