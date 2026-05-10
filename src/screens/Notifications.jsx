@@ -23,20 +23,28 @@ export const Notifications = () => {
 
     // Subscribe to TransferCompleted events
     const setupListener = async () => {
-      listenerId.current = program.addEventListener("TransferCompleted", (event, slot) => {
-        // If we received funds
-        if (event.recipient.toString() === publicKey.toString()) {
-          const amount = Number(event.amountUsdc) / 1000000;
-          const senderShort = `${event.sender.toString().slice(0, 8)}...`;
-          addNotification({
-            type: "receive",
-            title: `Money received: +${amount.toFixed(2)} USDC`,
-            body: `From ${senderShort}`,
-            time: new Date().toISOString(),
-            unread: true,
-          });
+      try {
+        if (!program.idl.events) {
+          console.warn("Mock Mode: Smart contract events not available yet.");
+          return;
         }
-      });
+        listenerId.current = program.addEventListener("TransferCompleted", (event, slot) => {
+          // If we received funds
+          if (event.recipient.toString() === publicKey.toString()) {
+            const amount = Number(event.amountUsdc) / 1000000;
+            const senderShort = `${event.sender.toString().slice(0, 8)}...`;
+            addNotification({
+              type: "receive",
+              title: `Money received: +${amount.toFixed(2)} USDC`,
+              body: `From ${senderShort}`,
+              time: new Date().toISOString(),
+              unread: true,
+            });
+          }
+        });
+      } catch (e) {
+        console.warn("Event listener setup failed:", e);
+      }
     };
     
     setupListener();
