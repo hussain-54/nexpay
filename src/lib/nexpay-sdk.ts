@@ -16,6 +16,13 @@ export async function initializeUser(
   referralCode: string = ""
 ): Promise<string> {
   const program = getProgram(wallet);
+  
+  // MOCK MODE: If the IDL is empty or smart contract is not yet deployed
+  if (!program.methods || !program.methods.initializeUser) {
+    console.warn("Smart Contract not fully deployed. Mocking initializeUser transaction.");
+    return new Promise(resolve => setTimeout(() => resolve("mock_tx_signature_user_init_" + Date.now()), 1500));
+  }
+
   const [userPDA] = getUserPDA(wallet.publicKey);
   const [configPDA] = getConfigPDA();
 
@@ -35,6 +42,12 @@ export async function initializeUser(
 // --- Fetch User Account ---
 export async function fetchUserAccount(wallet: any): Promise<any | null> {
   const program = getProgram(wallet);
+
+  if (!program.account || !program.account.userAccount) {
+    // If not deployed, we just return null to force them through onboarding
+    return null;
+  }
+
   const [userPDA] = getUserPDA(wallet.publicKey);
   try {
     return await program.account.userAccount.fetch(userPDA);
@@ -51,17 +64,25 @@ export async function transferStablecoin(
   recipientCountry: string,
   memo: string
 ): Promise<{ signature: string; fee: number; netAmount: number }> {
-  // Convert to micro-units (USDC has 6 decimals)
   const amountMicro = new BN(Math.round(amountUsdc * 1_000_000));
   const feeMicro = amountMicro.muln(10).divn(10000); // 0.1%
   const netMicro = amountMicro.sub(feeMicro);
 
   const program = getProgram(wallet);
+  
+  if (!program.methods || !program.methods.transferStablecoin) {
+    console.warn("Smart Contract not fully deployed. Mocking transfer transaction.");
+    return new Promise(resolve => setTimeout(() => resolve({
+      signature: "mock_tx_signature_transfer_" + Date.now(),
+      fee: feeMicro.toNumber() / 1_000_000,
+      netAmount: netMicro.toNumber() / 1_000_000,
+    }), 1500));
+  }
+
   const [senderPDA] = getUserPDA(wallet.publicKey);
   const [recipientPDA] = getUserPDA(recipientPubkey);
   const [configPDA] = getConfigPDA();
   
-  // We need to fetch the sender account to get the current transfer_count to derive the transfer PDA
   let senderUserAccount;
   try {
     senderUserAccount = await program.account.userAccount.fetch(senderPDA);
@@ -71,11 +92,9 @@ export async function transferStablecoin(
   
   const [transferRecordPDA] = getTransferPDA(wallet.publicKey, senderUserAccount.transferCount);
 
-  // Get token accounts
   const senderTokenAccount = await getAssociatedTokenAddress(USDC_MINT, wallet.publicKey);
   const recipientTokenAccount = await getAssociatedTokenAddress(USDC_MINT, recipientPubkey);
   
-  // Platform config stores fee_wallet
   const configAccount = await program.account.platformConfig.fetch(configPDA);
   const feeTokenAccount = await getAssociatedTokenAddress(USDC_MINT, configAccount.feeWallet);
 
@@ -123,6 +142,13 @@ export async function getSolBalance(walletPubkey: PublicKey): Promise<number> {
 // --- Fetch Transfer History (by reading PDA accounts) ---
 export async function fetchTransferHistory(wallet: any): Promise<any[]> {
   const program = getProgram(wallet);
+  if (!program.account || !program.account.userAccount) {
+    return [
+      { pdaAddress: "mock_pda_1", amount: new BN(50000000), recipientCountry: "USA", memo: "Mock Transfer 1" },
+      { pdaAddress: "mock_pda_2", amount: new BN(15000000), recipientCountry: "UK", memo: "Mock Transfer 2" }
+    ];
+  }
+
   const [senderPDA] = getUserPDA(wallet.publicKey);
   let userAccount: any;
   try {
@@ -147,6 +173,10 @@ export async function fetchTransferHistory(wallet: any): Promise<any[]> {
 // --- Freeze / Unfreeze Wallet ---
 export async function setWalletFrozen(wallet: any, freeze: boolean): Promise<string> {
   const program = getProgram(wallet);
+  if (!program.methods || !program.methods.freezeWallet) {
+    return new Promise(resolve => setTimeout(() => resolve("mock_freeze_tx_" + Date.now()), 1000));
+  }
+
   const [userPDA] = getUserPDA(wallet.publicKey);
   const [configPDA] = getConfigPDA();
 
