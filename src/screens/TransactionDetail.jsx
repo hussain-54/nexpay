@@ -5,7 +5,8 @@ import { PublicKey } from '@solana/web3.js';
 import { Card, Button } from '../components/ui';
 import { useToast } from '../contexts/ToastContext';
 import { useSolanaWallet } from '../hooks/useSolanaWallet';
-import { getProgram, explorerLink } from '../lib/solana';
+import { getProgram } from '../lib/solana';
+import { explorerLink } from '../lib/nexpay-sdk';
 import { WalletGuard } from '../components/WalletGuard';
 
 export const TransactionDetail = () => {
