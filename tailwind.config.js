@@ -11,12 +11,12 @@ export default {
         accent: "#10B981",
         danger: "#EF4444",
         warning: "#F59E0B",
-        bgDark: "#0F0F13",
-        bgLight: "#F9FAFB",
-        card: "#1A1A24",
-        borderDark: "rgba(255,255,255,0.08)",
-        textPrimary: "#F9FAFB",
-        textMuted: "#9CA3AF"
+        bgDark: "#F3F4F6", // renamed visually, but kept variable name to avoid massive code rewrite
+        bgLight: "#FFFFFF",
+        card: "#FFFFFF",
+        borderDark: "#E5E7EB",
+        textPrimary: "#111827",
+        textMuted: "#6B7280"
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

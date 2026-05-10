@@ -10,10 +10,7 @@ export default defineConfig({
       protocolImports: true,
     }),
   ],
-  define: {
-    global: "globalThis",
-    "process.env": {},
-  },
+
   optimizeDeps: {
     esbuildOptions: {
       define: { global: "globalThis" },

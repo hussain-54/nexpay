@@ -42,7 +42,7 @@ export const Input = React.forwardRef(({ className, label, error, ...props }, re
       <input
         ref={ref}
         className={cn(
-          "h-12 w-full rounded-xl border border-borderDark bg-[#12121A] px-4 py-2 text-textPrimary placeholder:text-textMuted focus:outline-none focus:border-primary transition-colors",
+          "h-12 w-full rounded-xl border border-borderDark bg-white px-4 py-2 text-textPrimary placeholder:text-textMuted focus:outline-none focus:border-primary transition-colors",
           error && "border-danger focus:border-danger",
           className
         )}
@@ -73,7 +73,7 @@ export const Select = React.forwardRef(({ className, label, options = [], ...pro
       <select
         ref={ref}
         className={cn(
-          "h-12 w-full rounded-xl border border-borderDark bg-[#12121A] px-4 py-2 text-textPrimary focus:outline-none focus:border-primary transition-colors appearance-none",
+          "h-12 w-full rounded-xl border border-borderDark bg-white px-4 py-2 text-textPrimary focus:outline-none focus:border-primary transition-colors appearance-none",
           className
         )}
         {...props}

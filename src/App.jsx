@@ -60,7 +60,7 @@ const withErrorBoundary = (Component) => (
 const App = () => {
   return (
     <div style={{ maxWidth: 430, margin: "0 auto", minHeight: "100vh",
-      background: "#0F0F13", color: "#F9FAFB",
+      background: "#F3F4F6", color: "#111827",
       fontFamily: "Inter, system-ui, sans-serif" }}>
       <AppErrorBoundary>
         <ToastProvider>
