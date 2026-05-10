@@ -144,8 +144,26 @@ export async function fetchTransferHistory(wallet: any): Promise<any[]> {
   const program = getProgram(wallet);
   if (!program.account || !program.account.userAccount) {
     return [
-      { pdaAddress: "mock_pda_1", amount: new BN(50000000), recipientCountry: "USA", memo: "Mock Transfer 1" },
-      { pdaAddress: "mock_pda_2", amount: new BN(15000000), recipientCountry: "UK", memo: "Mock Transfer 2" }
+      { 
+        pdaAddress: "mock_pda_1", 
+        amountUsdc: new BN(50000000), 
+        recipientCountry: "USA", 
+        memo: "Mock Transfer 1",
+        sender: wallet?.publicKey || new PublicKey("11111111111111111111111111111111"),
+        recipient: new PublicKey("4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"),
+        timestamp: new BN(Math.floor(Date.now() / 1000) - 3600),
+        status: 1
+      },
+      { 
+        pdaAddress: "mock_pda_2", 
+        amountUsdc: new BN(15000000), 
+        recipientCountry: "UK", 
+        memo: "Mock Transfer 2",
+        sender: new PublicKey("EJwZniZseaWTyP354kPUM52G3T14q2T1eZcR4K7XhBps"),
+        recipient: wallet?.publicKey || new PublicKey("11111111111111111111111111111111"),
+        timestamp: new BN(Math.floor(Date.now() / 1000) - 86400),
+        status: 1
+      }
     ];
   }
 
