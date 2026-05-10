@@ -23,7 +23,7 @@
     "qrcode.react": "^4.0.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.15.0",
+    "react-router-dom": "^6.26.0",
     "rpc-websockets": "^7.11.0",
     "tailwind-merge": "^3.5.0",
     "zustand": "^5.0.13"

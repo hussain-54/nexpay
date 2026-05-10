@@ -6,14 +6,19 @@ export default defineConfig({
   plugins: [
     react(),
     nodePolyfills({
-      globals: {
-        Buffer: true,
-        global: true,
-        process: true,
-      },
+      globals: { Buffer: true, global: true, process: true },
       protocolImports: true,
     }),
   ],
+  define: {
+    global: "globalThis",
+    "process.env": {},
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: { global: "globalThis" },
+    },
+  },
   resolve: {
     alias: {
       crypto: "crypto-browserify",
@@ -22,8 +27,13 @@ export default defineConfig({
   },
   build: {
     target: "esnext",
+    outDir: "dist",
+    sourcemap: false,
     rollupOptions: {
       external: [],
+      output: {
+        manualChunks: undefined,
+      },
     },
   },
 });
