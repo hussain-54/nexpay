@@ -51,7 +51,7 @@ export const Home = () => {
   const recentTransactions = transactions;
 
   return (
-    <div className="flex flex-col h-full p-6 space-y-6 bg-bgDark">
+    <div className="flex flex-col min-h-full p-6 space-y-6 bg-bgDark">
       {/* Header */}
       <div className="flex justify-between items-center mt-2">
         <div className="flex items-center space-x-3">
@@ -66,18 +66,18 @@ export const Home = () => {
         
         <div className="flex items-center space-x-2">
           {shortAddress && (
-            <button onClick={copyAddress} className="flex items-center space-x-1 px-3 py-1.5 bg-card border border-borderDark rounded-full text-xs font-mono hover:bg-borderDark transition-colors">
+            <button onClick={copyAddress} className="flex items-center space-x-1 px-3 py-1.5 bg-white shadow-sm border border-borderDark rounded-full text-xs font-mono hover:bg-gray-50 transition-colors">
               <WalletIcon size={12} className="text-primary" />
               <span>{shortAddress}</span>
             </button>
           )}
-          <button onClick={openExplorer} className="p-2 rounded-full bg-card border border-borderDark hover:bg-card/80 transition-colors">
+          <button onClick={openExplorer} className="p-2 rounded-full bg-white shadow-sm border border-borderDark hover:bg-gray-50 transition-colors">
             <ExternalLink size={16} className="text-textMuted hover:text-primary transition-colors" />
           </button>
-          <button onClick={() => navigate('/notifications')} className="relative p-2 rounded-full bg-card border border-borderDark hover:bg-card/80 transition-colors">
+          <button onClick={() => navigate('/notifications')} className="relative p-2 rounded-full bg-white shadow-sm border border-borderDark hover:bg-gray-50 transition-colors">
             <Bell size={16} className="text-textPrimary" />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-danger rounded-full border-2 border-bgDark"></span>
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-danger rounded-full border-2 border-white"></span>
             )}
           </button>
         </div>
@@ -90,24 +90,24 @@ export const Home = () => {
         </Card>
       )}
 
-      {/* Balance Card */}
-      <Card className="flex flex-col items-center justify-center py-8 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/10 to-transparent opacity-50 pointer-events-none" />
-        <button onClick={refreshBalances} className="absolute top-3 right-3 p-1.5 bg-bgDark/50 rounded-full hover:bg-primary/20 transition-colors opacity-0 group-hover:opacity-100">
-          <RefreshCcw size={14} className="text-textMuted hover:text-primary" />
+      {/* Premium Balance Card */}
+      <div className="flex flex-col items-center justify-center py-10 relative overflow-hidden group bg-white rounded-3xl shadow-sm border border-borderDark">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+        <button onClick={refreshBalances} className="absolute top-4 right-4 p-2 bg-gray-50 rounded-full hover:bg-primary/10 transition-colors opacity-0 group-hover:opacity-100 shadow-sm border border-borderDark">
+          <RefreshCcw size={16} className="text-textMuted hover:text-primary" />
         </button>
-        <p className="text-sm text-textMuted z-10">Total Balance</p>
-        <h1 className="text-4xl font-mono font-bold mt-2 z-10">${usdcBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} USDC</h1>
+        <p className="text-sm text-textMuted font-medium z-10">Total Balance</p>
+        <h1 className="text-5xl font-mono font-bold mt-2 z-10 tracking-tight text-textPrimary text-center break-all px-4">${usdcBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}<span className="text-2xl text-textMuted font-medium ml-2">USDC</span></h1>
         
-        <div className="flex space-x-2 mt-4 z-10">
-          <div className="px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium">
+        <div className="flex space-x-2 mt-5 z-10">
+          <div className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
             Tier: {user?.tier || 'Free'}
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-3">
         <ActionBtn icon={ArrowUpRight} label="Send" onClick={() => navigate('/send')} />
         <ActionBtn icon={ArrowDownLeft} label="Receive" onClick={() => navigate('/receive')} />
         <ActionBtn icon={RefreshCcw} label="Swap" onClick={() => navigate('/wallet')} />

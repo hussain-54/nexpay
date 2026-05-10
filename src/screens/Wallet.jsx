@@ -103,33 +103,50 @@ export const Wallet = () => {
 
             <div className="space-y-3 pt-4">
               <h2 className="text-sm font-bold text-textMuted">Swap Tokens (Simulated)</h2>
-              <Card className="space-y-4">
-                <div className="bg-warning/10 border border-warning/20 p-2 rounded text-xs text-warning text-center">
-                  Swap is simulated on devnet
-                </div>
-                <div className="flex space-x-2">
-                  <Select value={swapFrom} onChange={(e) => setSwapFrom(e.target.value)} options={[{label:'USDC', value:'USDC'}, {label:'SOL', value:'SOL'}]} className="w-28 bg-white" />
-                  <Input type="number" min="0" step="0.01" placeholder="0.00" value={swapAmount} onChange={(e) => setSwapAmount(e.target.value)} className="font-mono" />
+              <div className="bg-white p-4 rounded-3xl shadow-sm border border-borderDark space-y-2 relative">
+                
+                {/* From Box */}
+                <div className="bg-gray-50 rounded-2xl p-4 border border-transparent focus-within:border-primary transition-colors">
+                  <p className="text-xs text-textMuted font-medium mb-2">You Pay</p>
+                  <div className="flex items-center justify-between">
+                    <Select value={swapFrom} onChange={(e) => setSwapFrom(e.target.value)} options={[{label:'USDC', value:'USDC'}, {label:'SOL', value:'SOL'}]} className="w-24 bg-white border-borderDark h-10 text-sm shadow-sm" />
+                    <input 
+                      type="number" min="0" step="0.01" placeholder="0" 
+                      value={swapAmount} onChange={(e) => setSwapAmount(e.target.value)} 
+                      className="bg-transparent text-right font-mono text-3xl font-bold w-full ml-4 focus:outline-none placeholder:text-gray-300" 
+                    />
+                  </div>
                 </div>
                 
-                <div className="flex justify-center -my-2 relative z-10">
+                {/* Swap Icon */}
+                <div className="absolute left-1/2 top-[102px] -translate-x-1/2 -translate-y-1/2 z-10">
                   <button 
                     onClick={() => { const temp = swapFrom; setSwapFrom(swapTo); setSwapTo(temp); }}
-                    className="w-8 h-8 rounded-full bg-card border border-borderDark flex items-center justify-center hover:bg-borderDark transition-colors"
+                    className="w-10 h-10 rounded-xl bg-white border-2 border-gray-50 shadow-sm flex items-center justify-center hover:bg-gray-50 transition-colors"
                   >
-                    <ArrowDownUp size={14} className="text-primary" />
+                    <ArrowDownUp size={16} className="text-primary" />
                   </button>
                 </div>
 
-                <div className="flex space-x-2">
-                  <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-28 bg-white" />
-                  <Input type="text" readOnly value={swapAmount ? (Number(swapAmount) * 0.99).toFixed(4) : '0.00'} className="font-mono bg-white text-textMuted" />
+                {/* To Box */}
+                <div className="bg-gray-50 rounded-2xl p-4 border border-transparent focus-within:border-primary transition-colors">
+                  <p className="text-xs text-textMuted font-medium mb-2">You Receive</p>
+                  <div className="flex items-center justify-between">
+                    <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-24 bg-white border-borderDark h-10 text-sm shadow-sm" />
+                    <input 
+                      type="text" readOnly 
+                      value={swapAmount ? (Number(swapAmount) * 0.99).toFixed(4) : '0'} 
+                      className="bg-transparent text-right font-mono text-3xl font-bold w-full ml-4 focus:outline-none text-textPrimary" 
+                    />
+                  </div>
                 </div>
 
-                <Button onClick={handleSwap} disabled={!swapAmount || Number(swapAmount) <= 0} isLoading={isSwapping} className="w-full">
-                  Confirm Swap
-                </Button>
-              </Card>
+                <div className="pt-2">
+                  <Button onClick={handleSwap} disabled={!swapAmount || Number(swapAmount) <= 0} isLoading={isSwapping} className="w-full text-white font-bold h-14 rounded-2xl">
+                    Confirm Swap
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         )}
