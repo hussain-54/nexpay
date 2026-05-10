@@ -167,7 +167,7 @@ export const Settings = () => {
 };
 
 const SettingLink = ({ icon: Icon, title, desc }) => (
-  <button className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors text-left">
+  <button className="w-full flex items-center justify-between p-4 hover:bg-borderDark/30 transition-colors text-left rounded-xl">
     <div className="flex items-center space-x-3">
       <div className="w-8 h-8 rounded-full bg-borderDark flex items-center justify-center text-textMuted">
         <Icon size={16} />

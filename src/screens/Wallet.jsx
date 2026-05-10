@@ -34,7 +34,7 @@ export const Wallet = () => {
 
   const assets = [
     { id: 'usdc', name: 'USDC', balance: usdcBalance || 0, value: usdcBalance || 0, color: 'bg-[#2775CA]', badge: null },
-    { id: 'sol', name: 'SOL', balance: solBalance || 0, value: (solBalance || 0) * 150 /* mock rate */, color: 'bg-[#14F195] text-bgDark', badge: null },
+    { id: 'sol', name: 'SOL', balance: solBalance || 0, value: (solBalance || 0) * 150 /* mock rate */, color: 'bg-[#14F195] text-white', badge: null },
     { id: 'usdt', name: 'USDT', balance: 0, value: 0, color: 'bg-[#26A17B]', badge: 'Coming soon' },
   ];
 
@@ -52,13 +52,13 @@ export const Wallet = () => {
         <div className="flex bg-card p-1 rounded-xl mb-6 border border-borderDark">
           <button 
             onClick={() => setActiveTab('assets')} 
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'assets' ? 'bg-[#2A2A35] text-textPrimary' : 'text-textMuted hover:text-textPrimary'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'assets' ? 'bg-white shadow-sm text-textPrimary' : 'text-textMuted hover:text-textPrimary'}`}
           >
             Assets & Swap
           </button>
           <button 
             onClick={() => setActiveTab('topup')} 
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'topup' ? 'bg-[#2A2A35] text-textPrimary' : 'text-textMuted hover:text-textPrimary'}`}
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === 'topup' ? 'bg-white shadow-sm text-textPrimary' : 'text-textMuted hover:text-textPrimary'}`}
           >
             Top-Up
           </button>
@@ -108,7 +108,7 @@ export const Wallet = () => {
                   Swap is simulated on devnet
                 </div>
                 <div className="flex space-x-2">
-                  <Select value={swapFrom} onChange={(e) => setSwapFrom(e.target.value)} options={[{label:'USDC', value:'USDC'}, {label:'SOL', value:'SOL'}]} className="w-28 bg-[#12121A]" />
+                  <Select value={swapFrom} onChange={(e) => setSwapFrom(e.target.value)} options={[{label:'USDC', value:'USDC'}, {label:'SOL', value:'SOL'}]} className="w-28 bg-white" />
                   <Input type="number" min="0" step="0.01" placeholder="0.00" value={swapAmount} onChange={(e) => setSwapAmount(e.target.value)} className="font-mono" />
                 </div>
                 
@@ -122,8 +122,8 @@ export const Wallet = () => {
                 </div>
 
                 <div className="flex space-x-2">
-                  <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-28 bg-[#12121A]" />
-                  <Input type="text" readOnly value={swapAmount ? (Number(swapAmount) * 0.99).toFixed(4) : '0.00'} className="font-mono bg-[#12121A]" />
+                  <Select value={swapTo} onChange={(e) => setSwapTo(e.target.value)} options={[{label:'SOL', value:'SOL'}, {label:'USDC', value:'USDC'}]} className="w-28 bg-white" />
+                  <Input type="text" readOnly value={swapAmount ? (Number(swapAmount) * 0.99).toFixed(4) : '0.00'} className="font-mono bg-white text-textMuted" />
                 </div>
 
                 <Button onClick={handleSwap} disabled={!swapAmount || Number(swapAmount) <= 0} isLoading={isSwapping} className="w-full">
